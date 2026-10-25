@@ -118,9 +118,9 @@ def main() -> None:
         for name,relative,before,after,diagnostic in cases:
             file=clone/relative;original=file.read_text('utf-8')
             require(before in original,'Negative test fixture is stale: '+name)
-            file.write_text(original.replace(before,after,1),encoding='utf-8')
+            file.write_text(original.replace(before,after,1),encoding='utf-8',newline='\n')
             result=subprocess.run([os.sys.executable,str(clone/'tools/verify_translation.py')],capture_output=True,text=True,timeout=30)
-            file.write_text(original,encoding='utf-8')
+            file.write_text(original,encoding='utf-8',newline='\n')
             require(result.returncode!=0 and diagnostic in result.stderr,'Gate failed to reject injected '+name)
             rejected.append(name)
         runtime_cases=[
@@ -133,9 +133,9 @@ def main() -> None:
             require(before in original,'Runtime negative fixture stale: '+name)
             mutated=original.replace(before,after,1)
             if name=='hidden_tooltip_regression': mutated=mutated.replace('changed and wasShown and tooltip.Show','changed and tooltip.Show')
-            file.write_text(mutated,encoding='utf-8')
+            file.write_text(mutated,encoding='utf-8',newline='\n')
             result=subprocess.run([str(lua),str(clone/test),str(base),str(clone),'fresh'],capture_output=True,text=True,timeout=60)
-            file.write_text(original,encoding='utf-8')
+            file.write_text(original,encoding='utf-8',newline='\n')
             require(result.returncode!=0 and diagnostic in result.stderr,'Runtime gate failed to reject '+name+'\n'+result.stdout+result.stderr)
             rejected.append(name)
     print('PASS: rejected injected failures:',', '.join(rejected),flush=True)
