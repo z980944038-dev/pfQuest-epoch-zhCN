@@ -3,3 +3,7 @@ __pycache__/
 node_modules/
 dist/
 .DS_Store
+
+.qa-deps/
+.qa-results/
+luac.out

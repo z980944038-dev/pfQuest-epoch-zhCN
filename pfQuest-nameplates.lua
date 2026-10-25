@@ -1,3 +1,6 @@
+-- Use server-original quest text for matching; localized UI globals remain intact.
+local GetQuestLogTitle = pfQuestEpochServerAPI.GetQuestLogTitle
+local GetQuestLogLeaderBoard = pfQuestEpochServerAPI.GetQuestLogLeaderBoard
 local questObjectives = {}
 local nameplateFrames = {}
 local iconFrames = {}

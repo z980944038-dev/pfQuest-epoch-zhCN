@@ -181,7 +181,7 @@ def locale_block(text: str, name: str) -> str:
 def verify_source_english(source: dict[int, str], vanilla: dict[int, str], ident: int) -> bool:
     # Protect against reused IDs: never transplant a vanilla translation
     # when Project Epoch changed the English name for that ID.
-    return ident not in vanilla or source[ident].casefold() == vanilla[ident].casefold()
+    return ident in vanilla and source[ident].casefold() == vanilla[ident].casefold()
 
 
 def emit_string_table(path: Path, category: str, entries: dict[int, str]) -> None:
@@ -216,15 +216,37 @@ def main() -> None:
     names_objects = parse_names((cd/'ObjectiveNameData.lua').read_text('utf-8'))
     names_head = parse_names((cd/'EpochHeadData.lua').read_text('utf-8'))
 
+    expected_zip = "c4b2ff2d4e767739d63f7424f53d6ddb24157bfaf2d60e542f7a4bc1a85cb0a1"
+    actual_zip = hashlib.sha256(args.base_zhcn_zip.read_bytes()).hexdigest()
+    if actual_zip != expected_zip:
+        raise ValueError("Base Chinese release SHA256 differs from the reviewed 7.0.1 asset")
+    zhvanilla, envanilla = {}, {}
     with zipfile.ZipFile(args.base_zhcn_zip) as ref:
-        zhvanilla = {}
+        members = set(ref.namelist())
         for cat in ['items', 'units', 'objects', 'zones']:
-            src = ref.read(f'pfQuest-wotlk/db/zhCN/{cat}.lua').decode('utf-8')
-            zhvanilla[cat] = parse_id_strings(src)
-
-    envanilla = {}
-    for cat in ['items', 'units', 'objects', 'zones']:
-        envanilla[cat] = parse_id_strings((args.base_enus/f'db/enUS/{cat}.lua').read_text('utf-8'))
+            zhvanilla[cat], envanilla[cat] = {}, {}
+            # The release's TBC tables carry hundreds of valid localized zone names.
+            for suffix in ('', '-tbc', '-wotlk'):
+                for language, target in [('zhCN', zhvanilla[cat]), ('enUS', envanilla[cat])]:
+                    name = f'pfQuest-wotlk/db/{language}/{cat}{suffix}.lua'
+                    if name in members:
+                        for ident, value in parse_id_strings(ref.read(name).decode('utf-8')).items():
+                            if value == '_':
+                                target.pop(ident, None)
+                            else:
+                                target[ident] = value
+    reviewed = json.loads((root/'localization/REVIEWED_OVERRIDES.json').read_text('utf-8'))
+    def apply_review(kind, ident, field, original, fallback):
+        if kind == 'quests':
+            entry = reviewed['quests'].get(str(ident), {}).get(field)
+        else:
+            entry = reviewed['names'].get(kind, {}).get(str(ident))
+        if not entry:
+            return fallback
+        actual = hashlib.sha256(original.encode('utf-8')).hexdigest()
+        if actual != entry['source_sha256']:
+            raise ValueError(f"Reviewed English source changed: {kind}:{ident}:{field}")
+        return entry['text']
 
     # Names are keyed by their English text as well as stable IDs. If a server
     # reuses an ID, an exact English-name match avoids attaching the wrong CN.
@@ -264,8 +286,10 @@ def main() -> None:
                                 'en_upstream':english['T'],'en_epochcn':row[4]})
         translated = {}
         for index, field in enumerate(['T','O','D']):
-            text = row[index] or ''
-            if text and HAN.search(text):
+            text = apply_review('quests', ident, field, english[field], row[index] or '')
+            if english[field] == '':
+                translated[field] = ''
+            elif text and HAN.search(text):
                 translated[field] = text
             else:
                 translated[field] = english[field]
@@ -281,7 +305,8 @@ def main() -> None:
     lines.append('}')
     (db/'zhCN/quests-epoch.lua').write_text('\n'.join(lines)+'\n', encoding='utf-8')
 
-    counts = collections.Counter()
+    counts = {}
+    all_localized = {}
     for cat in ['items', 'units', 'objects', 'zones']:
         ens = parse_id_strings((db/f'enUS/{cat}-epoch.lua').read_text('utf-8'))
         localized = {}
@@ -302,10 +327,55 @@ def main() -> None:
                 options.append(zhvanilla[cat].get(ident))
             options.append(by_english[cat].get(english.casefold()))
             translation = next((name for name in options if name and HAN.search(name)), None)
+            translation = apply_review(cat, ident, None, english, translation)
             if translation:
                 localized[ident] = translation
+        all_localized[cat] = localized
         emit_string_table(db/f'zhCN/{cat}-epoch.lua', cat, localized)
         counts[cat] = {'translated':len(localized),'total':len(ens),'untranslated':len(ens)-len(localized)}
+
+    # Resolve embedded English proper names from the same attributable locale
+    # sources. Only exact, unambiguous names at word boundaries are replaced.
+    glossary_candidates = collections.defaultdict(set)
+    for cat in ['items', 'units', 'objects', 'zones']:
+        epoch_english = parse_id_strings((db/f'enUS/{cat}-epoch.lua').read_text('utf-8'))
+        for source_en, source_zh in [(envanilla[cat], zhvanilla[cat]), (epoch_english, all_localized[cat])]:
+            for ident, english_name in source_en.items():
+                chinese_name = source_zh.get(ident)
+                if (english_name and len(english_name) >= 4 and chinese_name and HAN.search(chinese_name)
+                        and not any(char in english_name for char in '|\n\r')):
+                    glossary_candidates[english_name].add(chinese_name)
+    buckets = collections.defaultdict(list)
+    for name, choices in glossary_candidates.items():
+        if len(choices) == 1:
+            buckets[name[:3]].append((name, next(iter(choices))))
+    for values in buckets.values():
+        values.sort(key=lambda pair: (-len(pair[0]), pair[0]))
+    glossary_changes = 0
+    for ident, record in output_quests.items():
+        for field, text in record.items():
+            if not HAN.search(text):
+                continue
+            chunks, cursor = [], 0
+            for word in re.finditer(r"(?<![A-Za-z0-9_])[A-Z][A-Za-z']*", text):
+                start = word.start()
+                if start < cursor:
+                    continue
+                for name, translated_name in buckets.get(text[start:start+3], []):
+                    end = start + len(name)
+                    if text.startswith(name, start) and (end == len(text) or not re.match(r'[A-Za-z0-9_]', text[end])):
+                        chunks.extend((text[cursor:start], translated_name))
+                        cursor = end
+                        glossary_changes += 1
+                        break
+            chunks.append(text[cursor:])
+            record[field] = ''.join(chunks)
+    lines = ['-- Generated by tools/build_zhcn.py; English identities remain untouched.', 'pfDB["quests"]["zhCN-epoch"] = {']
+    for ident, record in sorted(output_quests.items()):
+        fields = ', '.join(f'["{key}"] = {lua_quote(record[key])}' for key in ['T','O','D'])
+        lines.append(f'  [{ident}] = {{ {fields} }},')
+    lines.append('}')
+    (db/'zhCN/quests-epoch.lua').write_text('\n'.join(lines)+'\n',encoding='utf-8')
 
     # The professions overlay is intentionally empty in upstream.
     (db/'zhCN/professions-epoch.lua').write_text('pfDB["professions"]["zhCN-epoch"] = {}\n',encoding='utf-8')
@@ -330,6 +400,11 @@ def main() -> None:
              'epochcn_specific_quest_matches':from_epoch,
              'general_quest_matches':len(output_quests)-from_epoch,
              'quest_review_flags':quest_flags, 'name_coverage':counts,
+             'reviewed_quest_fields':sum(len(v) for v in reviewed['quests'].values()),
+             'reviewed_name_entries':{k:len(v) for k,v in reviewed['names'].items()},
+             'localization_version':'zhCN-beta.2',
+             'exact_proper_name_substitutions':glossary_changes,
+             'source_caveats':[{'quest_id':28705,'issue':'English objective places Ratchet in Silverpine Forest; CN keeps Ratchet, omits contradictory region. Original data untouched.'}],
              'note':'ID equality is not proof of semantic correctness. English server index is retained. No live game runtime test.'}
     (root/'localization/TRANSLATION_REPORT.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     manifest={'original':'https://github.com/Bennylavaa/pfQuest-epoch',
@@ -338,7 +413,10 @@ def main() -> None:
               'epochcn_commit':summary['epochcn_reference_commit'],
               'pfquest_core':'https://github.com/shagu/pfQuest',
               'pfquest_core_release':'7.0.1','pfquest_core_license':'MIT',
-              'usage':'Derived translation data only; no complete third-party addon redistributed.'}
+              'usage':'Derived translation data only; no complete third-party addon redistributed.',
+              'reviewed_overrides_sha256':hashlib.sha256((root/'localization/REVIEWED_OVERRIDES.json').read_bytes()).hexdigest(),
+              'input_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(cd.glob('*.lua'))},
+              'manual_names':'Community localization, not an official translation or proof of live-server correctness.'}
     (root/'localization/SOURCES.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(json.dumps({'quest_total':len(originals),'quest_chinese':len(output_quests),'flags':len(quest_flags),'name_coverage':counts},indent=2,ensure_ascii=False))
 

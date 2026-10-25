@@ -1,3 +1,7 @@
+-- Use server-original quest text for matching; localized UI globals remain intact.
+local GetQuestLogTitle = pfQuestEpochServerAPI.GetQuestLogTitle
+local GetQuestLogLeaderBoard = pfQuestEpochServerAPI.GetQuestLogLeaderBoard
+local GetQuestLogQuestText = pfQuestEpochServerAPI.GetQuestLogQuestText
 local questAnnounceFrame = CreateFrame("Frame", "pfQuestEpochAnnounce")
 questAnnounceFrame:RegisterEvent("UI_INFO_MESSAGE")
 questAnnounceFrame:SetScript("OnEvent", function(self, event, message)

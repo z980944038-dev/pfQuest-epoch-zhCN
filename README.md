@@ -1,44 +1,64 @@
-# pfQuest-epoch-zhCN · 纪元服任务数据库简体中文 Fork
+# pfQuest-epoch-zhCN · 纪元任务插件简体中文维护版
 
-> **非官方汉化派生项目**。本仓库是 [Bennylavaa/pfQuest-epoch](https://github.com/Bennylavaa/pfQuest-epoch) 的 GitHub Fork，不代表原作者、魔兽世界官方或 Project Epoch 官方。项目严格保留上游 LICENSE 与署名。此仓库的汉化工作使用了我们维护的 [EpochCN](https://github.com/z980944038-dev/EpochCN) 数据。
+本仓库是 **[Bennylavaa/pfQuest-epoch](https://github.com/Bennylavaa/pfQuest-epoch)** 的非官方 GitHub Fork，由 [EpochCN](https://github.com/z980944038-dev/EpochCN) 维护者进行中文化与兼容修复。原作者的许可证、署名和英文数据保留，不能将本项目误称为原作者或服务器官方版本。
 
-**开发基线**：pfQuest-epoch 3.3.0 + [Shagu pfQuest-wotlk 7.0.1](https://github.com/shagu/pfQuest/releases/tag/7.0.1)；WoW 3.3.5a。中文版本标记：`zhCN-beta.1`。**当前属于未经真实游戏客户端验收的测试版，不保证对复服后的所有任务完全准确。**
+**当前版本：3.3.0 / zhCN-beta.2**。固定基础依赖为 **pfQuest-wotlk 7.0.1**，目标为 WoW 3.3.5a / Project Epoch。
 
-## 已实现
+## 安装
 
-- 纪元数据库中 **2390 个任务 ID** 均关联到中文任务标题、目标与描述数据；个别原中文资料缺失的字段继续显示英文，避免凭空翻译。
-- 物品、NPC、游戏物体和区域按 ID 结合 [EpochCN](https://github.com/z980944038-dev/EpochCN) 及 Shagu 官方 pfQuest 简体中文数据库生成译名，未匹配项回退英文。
-- 使用原版 pfQuest 的任务日志翻译入口，同时默认选择简体中文（只在首次运行时设置，不会反复覆盖手动选择）。
-- 英文任务 ID、英文客户端匹配表和世界地图坐标数据库保持原样；中文查询仅在原英文查询失败时回退。
-- 任务详情扩展 Tooltip 展示中文标题与有译文的任务目标、描述，**不修改英文任务名索引**。
-- 在英文客户端使用的 pfQuest 基础版界面上补充 Shagu 已有的简体中文 UI 文本（源自 MIT 许可的语言表）。
+下载原作者的 [pfQuest-enUS-wotlk 7.0.1](https://github.com/shagu/pfQuest/releases/download/7.0.1/pfQuest-enUS-wotlk.zip) 和本仓库 [Releases](https://github.com/z980944038-dev/pfQuest-epoch-zhCN/releases) 中带 `zhCN-beta.2` 标识的安装包。解压后应为：
 
-**重要限制**：地图、任务目标和提示的实际行为与 UI 是否完整中文，还需在真实的 Project Epoch 客户端验证。部分细分区域缺少经过验证的中文名称；翻译质量与上游任务变动须持续校对。详见 `localization/TRANSLATION_REPORT.json`。
+```text
+Interface/AddOns/pfQuest-wotlk/pfQuest-wotlk.toc
+Interface/AddOns/pfQuest-epoch/pfQuest-epoch.toc
+```
 
-## 安装（测试）
+升级时先退出游戏，将原 `pfQuest-epoch` 文件夹移到游戏目录之外作备份，再放入新版同名文件夹；保留 `WTF` 中的角色设置。不要把新旧版本两个文件夹同时放进 AddOns，也不要使用仓库下载后带 `-main` 或 `-zhCN` 的目录名代替 `pfQuest-epoch`。
 
-1. 下载并解压基础插件 [pfQuest-enUS-wotlk 7.0.1](https://github.com/shagu/pfQuest/releases/download/7.0.1/pfQuest-enUS-wotlk.zip)，使游戏目录中存在 `Interface/AddOns/pfQuest-wotlk/pfQuest-wotlk.toc`。
-2. 从本仓库 [Releases](https://github.com/z980944038-dev/pfQuest-epoch-zhCN/releases) 下载带 `zhCN` 字样的测试版 ZIP，解压得到 `pfQuest-epoch` 目录，并放入同一 `Interface/AddOns/`。
-3. 进入 3.3.5a 客户端的插件管理，启用 `pfQuest-wotlk`、`pfQuest-epoch`。输入 `/pfqzh` 查看中文状态；`/pfqzh on`、`/pfqzh off` 可切换，切换后执行 `/reload`。
-4. 打开任务日志，使用 pfQuest 的语言选择入口检查“简体中文”；确认任务标题、目标与地点是否正确。
+`/pfqzh` 查看状态，`/pfqzh on` 开启中文，`/pfqzh off` 关闭中文。开关在 `/reload` 后生效，关闭时恢复此前的任务语言选择。客户端需要已有中文字库；本包不携带、不分发、不替换字体或 MPQ。
 
-**必须保留原文件夹名称 `pfQuest-epoch`**：插件 TOC 内的 `GetAddOnMetadata("pfQuest-epoch", ...)` 依赖该名称。不要直接将 GitHub Fork 的仓库名作为游戏插件文件夹名。
+## Beta 2 改了什么
 
-与 [EpochCN](https://github.com/z980944038-dev/EpochCN) 同时安装时，两个插件可能重复绘制地图标记或处理任务文本，请在 EpochCN 中关闭重复地图标记，先分别验证再决定是否并用。完整客户端静态文字仍由 EpochCN 的 MPQ 层负责，不由本插件修改。
+| 内容 | 本版状态 |
+|---|---|
+| 纪元任务 | 2390 个 ID；7170 个标题、目标、描述字段通过数量、占位符、颜色标记等静态检查 |
+| 物品名称 | 5948 / 5948 已有中文；统一 402 条同系列装备的术语 |
+| NPC / 单位名称 | 2265 / 2265 已有中文，纪元专名中包含社区音译 |
+| 游戏物体 | 803 / 813 中文；其余为 5 个空名、1 个内部模型名、4 段虚构语言，保留原样 |
+| 区域名称 | 1665 / 2363 中文；余下 698 条保留英文并列入检查结果，不计入已完成 |
+| 界面 | pfQuest 自有设置、追踪标签、数据库窗口与主动绘制的 Tooltip 接入中文显示层 |
+| 英文匹配 | 英文名称表、任务 ID、坐标、服务端 API 原样保留；显示中文不再改写匹配键 |
 
-## 翻译策略和回归条件
+本版逐条校订了一批有明确问题的任务字段，包括错误的物品数量、遗漏的声望门槛、灵魂状态提示、玩家称呼、性别模板和误译的否定句。校订记录在 [`localization/REVIEWED_OVERRIDES.json`](localization/REVIEWED_OVERRIDES.json)，每项绑定当前英文原文 SHA256，源任务变动时构建会报错，不会悄悄沿用过时校订。
 
-- `db/enUS`、`db/*-epoch.lua` 原始任务 ID、英文数据和坐标**不变**。
-- `db/zhCN` 独立存放译文；`localization/zhCN.lua` 负责加载、选择和显示，不覆盖英文名字索引。
-- 数据缺少可信中文时回退原文；不会用不受控机器翻译猜测专名。
-- 校验：`python3 tools/verify_translation.py`，以及在 `tools/` 中运行 `npm install --prefix tools && node tools/verify_lua.js && node tools/verify_runtime.js`（需要 Node.js；Lua 5.1 语法静态测试）。构建脚本 `tools/build_zhcn.py --help` 可查看依赖参数。
-- 更新依赖的具体提交与来源参见 `localization/SOURCES.json`。构建后的质量报告记录待人工校核的任务。
+这些数字表示数据覆盖与规定检查的结果，**不表示每一段继承译文都完成了人工文学润色，也不表示真实游戏客户端已经验收**。本版仍标记为 Beta。完整范围见 [`QA_REPORT.md`](QA_REPORT.md) 和 [`qa/BETA2_RESULT.json`](qa/BETA2_RESULT.json)。
 
-## 许可和原作者
+## EpochCN 并存
 
-- **pfQuest-epoch**：原作者 Bennylavaa/Shagu 等，**[自定义 LICENSE](LICENSE)**。只允许个人使用和修改、通过 GitHub Fork 参与开发与贡献；**禁止**在未经授权的启动器、整合包、商业发行渠道或 GitHub Fork 之外的平台分发。请保留原版权信息和上游链接。
-- **pfQuest（Shagu）**：简体中文 UI 与部分数据库译文来自其 MIT 许可项目。参见 [`localization/LICENSE-pfQuest-MIT.txt`](localization/LICENSE-pfQuest-MIT.txt)。pfQuest-wotlk 基础插件需单独从原仓库下载，本 Fork 不打包原基础插件。
-- **EpochCN**：本团队维护的已有中文译文，原仓库链接如上，不包括游戏客户端、MPQ 或第三方素材。
-- 原仓库文档另存为 [`README.upstream.md`](README.upstream.md)；修改记录与汉化来源独立保存。
+本 Fork 不修改 EpochCN 仓库、存档或地图开关。检测到 EpochCN 后，默认不再替它接管任务详情语言；通过 EpochCN 保存的原始 API 给 pfQuest 的匹配、进度与组队数据提供服务端文本，同时保留 EpochCN 全局 API 的中文返回值。
 
-游戏内功能验证尚未完成时，本项目只标记为 **Beta**，不会宣称正式稳定发布。
+兼容层只作用于 pfQuest 的已知函数，不重写全局 `GetLocale`、任务接口或通信函数。当前测试包含与 EpochCN 相同接口契约的中文 API 替身，并执行真实的 pfQuest 数据库和地图 Tooltip 代码；不把这个检查等同于加载所有第三方插件的完整游戏实测。
+
+## 开发与发布检查
+
+一次命令执行原生 Lua 5.1 编译检查、完整数据校验、八类运行场景、四类故障注入，以及两次独立打包的一致性检查：
+
+```sh
+python3 tools/run_checks.py --bootstrap
+```
+
+需要 Python 3.12+、C 编译器和 make。该命令只在本仓库 `.qa-deps/` 下载并构建 SHA256 固定的原版 Lua 5.1.5，以及读取原作者的基础插件；无需 API Key、游戏账号或全局安装。结果写入 `.qa-results/RESULT.json`。
+
+已有本地依赖时：
+
+```sh
+python3 tools/run_checks.py --lua /path/to/lua5.1 --luac /path/to/luac5.1 --base-dir /path/to/pfQuest-wotlk
+```
+
+汉化数据可通过 `tools/build_zhcn.py --help` 查看重建参数。打包用 `python3 tools/package_release.py`，只打入插件运行文件、安装说明和必要许可证，不打入基础插件、开发依赖、凭据或客户端素材。
+
+## 许可证与来源
+
+原项目采用[自定义许可证](LICENSE)，允许个人使用、修改与 GitHub Fork；不得擅自加入启动器、整合包、商业发行渠道或在 GitHub Fork 之外重新分发。原说明保存在 [README.upstream.md](README.upstream.md)。
+
+基础语言数据与 UI 译文来自 Shagu pfQuest 7.0.1（[MIT 许可证副本](localization/LICENSE-pfQuest-MIT.txt)）；已有中文任务数据来自我们维护的 EpochCN 固定提交。具体来源、摘要和校订说明见 [`localization/SOURCES.json`](localization/SOURCES.json)。

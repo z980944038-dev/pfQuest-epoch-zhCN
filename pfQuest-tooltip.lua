@@ -1,3 +1,5 @@
+-- Use server-original quest text for matching; localized UI globals remain intact.
+local GetQuestLogLeaderBoard = pfQuestEpochServerAPI.GetQuestLogLeaderBoard
 local partyQuestData = {}
 local myQuestMappings = {}
 local lastBroadcastState = {}
@@ -63,7 +65,7 @@ local function RebuildQuestMappings()
 
     local activeQuests = {}
     for qid = 1, GetNumQuestLogEntries() do
-        local questTitle, _, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle(qid)
+        local questTitle, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle(qid)
         if questTitle then
             activeQuests[questTitle] = {}
             local numObjectives = GetNumQuestLeaderBoards(qid)
@@ -457,7 +459,7 @@ local function ShareQuestData(forceFullSync)
     for targetKey, quests in pairs(myQuestMappings) do
         for _, questData in ipairs(quests) do
             for qid = 1, GetNumQuestLogEntries() do
-                local questTitle, _, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle(qid)
+                local questTitle, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle(qid)
 
                 if questTitle == questData.quest then
                     local numObjectives = GetNumQuestLeaderBoards(qid)
@@ -1045,7 +1047,7 @@ local function HookGameTooltip()
 
         for questName, lines in pairs(questGroups) do
             local symbol = "|cff555555[|cffffcc00!|cff555555]|r "
-            self:AddLine(symbol .. questName, 1, 1, 0)
+            self:AddLine(symbol .. (pfQuestEpochZhCN and pfQuestEpochZhCN.Text(questName) or questName), 1, 1, 0)
 
             for _, line in ipairs(lines) do
                 local classColor = GetClassColor(line.player)
@@ -1066,7 +1068,7 @@ local function HookGameTooltip()
 
                 local cr, cg, cb = classColor[1] * 255, classColor[2] * 255, classColor[3] * 255
                 local coloredName = string.format("|cFF%02x%02x%02x%s|r", cr, cg, cb, line.player)
-                local displayText = string.format("|cffaaaaaa- |r%s: %s (%d/%d)", coloredName, line.objective, line.current, line.total)
+                local displayText = string.format("|cffaaaaaa- |r%s: %s (%d/%d)", coloredName, (pfQuestEpochZhCN and pfQuestEpochZhCN.Text(line.objective) or line.objective), line.current, line.total)
                 self:AddLine(displayText, r, g, b)
             end
         end
@@ -1200,7 +1202,7 @@ local function HookPfQuestTooltip()
 
                 for questName, lines in pairs(questGroups) do
                     local symbol = "|cff555555[|cffffcc00!|cff555555]|r "
-                    tooltip:AddLine(symbol .. questName, 1, 1, 0)
+                    tooltip:AddLine(symbol .. (pfQuestEpochZhCN and pfQuestEpochZhCN.Text(questName) or questName), 1, 1, 0)
 
                     for _, line in ipairs(lines) do
                         local classColor = GetClassColor(line.player)
@@ -1221,7 +1223,7 @@ local function HookPfQuestTooltip()
 
                         local cr, cg, cb = classColor[1] * 255, classColor[2] * 255, classColor[3] * 255
                         local coloredName = string.format("|cFF%02x%02x%02x%s|r", cr, cg, cb, line.player)
-                        local displayText = string.format("|cffaaaaaa- |r%s: %s (%d/%d)", coloredName, line.objective, line.current, line.total)
+                        local displayText = string.format("|cffaaaaaa- |r%s: %s (%d/%d)", coloredName, (pfQuestEpochZhCN and pfQuestEpochZhCN.Text(line.objective) or line.objective), line.current, line.total)
                         tooltip:AddLine(displayText, r, g, b)
                     end
                 end

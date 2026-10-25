@@ -1,193 +1,257 @@
--- pfQuest-epoch-zhCN: display translations without mutating English lookup keys.
--- English text is the server's quest/object identity in many 3.3.5a clients.
--- Modifying pfDB[db].loc or pfDB[db].enUS breaks matching and map pins.
-
-pfQuestEpochZhCN = pfQuestEpochZhCN or {}
+-- 仅在本插件的 ADDON_LOADED 之后读取存档；英文数据库和服务端 API 不做替换。
+pfQuestEpochZhCN = { enabled = false, ready = false, version = "zhCN-beta.2" }
 local zh = pfQuestEpochZhCN
-zh.enabled = (pfQuest_epoch_zhCNEnabled ~= false)
 local kinds = { "quests", "items", "units", "objects", "zones", "professions" }
+local direct, byPrefix, ownedQuestText
+
+local function chinese(text)
+  return type(text) == "string" and string.find(text, "[\128-\255]") ~= nil
+end
+
+local function addPhrase(index, original, translated)
+  if type(original) ~= "string" or type(translated) ~= "string" or
+      original == "" or translated == "" or original == translated then return end
+  if index[original] == nil then
+    index[original] = translated
+  elseif index[original] ~= translated then
+    index[original] = false -- 同名异译不凭遍历顺序选择；有 ID 的显示另行精确处理。
+  end
+end
+
+local function buildDisplayIndex()
+  if direct then return end
+  direct, byPrefix, ownedQuestText = {}, {}, {}
+  for _, kind in ipairs(kinds) do
+    local db = pfDB and pfDB[kind]
+    if db then
+      for id, value in pairs(db["zhCN-epoch"] or {}) do
+        local original = db.enUS and db.enUS[id]
+        if kind == "quests" then
+          if type(original) == "table" and type(value) == "table" then
+            for _, field in ipairs({"T", "O", "D"}) do
+              addPhrase(direct, original[field], value[field])
+              if chinese(value[field]) then ownedQuestText[value[field]] = true end
+            end
+          end
+        else
+          addPhrase(direct, original, value)
+        end
+      end
+    end
+  end
+  for key, value in pairs(pfQuestEpochZhCN_UI or {}) do direct[key] = value end
+  for key, value in pairs(pfQuestEpochZhCN_ExtraUI or {}) do direct[key] = value end
+  for text, translated in pairs(direct) do
+    -- 完整段落走精确匹配，短语索引只处理名称与短标签。
+    if translated and #text >= 3 and #text <= 160 and not string.find(text, "[\n\r|]") then
+      local first = string.sub(text, 1, 3)
+      local bucket = byPrefix[first] or {}
+      bucket[#bucket + 1] = { text, translated }
+      byPrefix[first] = bucket
+    end
+  end
+  for _, bucket in pairs(byPrefix) do
+    table.sort(bucket, function(a,b)
+      if #a[1] == #b[1] then return a[1] < b[1] end
+      return #a[1] > #b[1]
+    end)
+  end
+end
+
+local function plainText(text)
+  if direct[text] then return direct[text] end
+  local out, pos, mark = {}, 1, 1
+  while pos <= #text do
+    local before = pos > 1 and string.sub(text, pos-1, pos-1) or ""
+    local bucket = byPrefix[string.sub(text,pos,pos+2)]
+    local matched
+    if bucket and not string.find(before, "[%w_]") then
+      for _, phrase in ipairs(bucket) do
+        local last = pos + #phrase[1] - 1
+        local after = string.sub(text,last+1,last+1)
+        if string.sub(text,pos,last) == phrase[1] and not string.find(after,"[%w_]") then
+          out[#out+1] = string.sub(text,mark,pos-1)
+          out[#out+1] = phrase[2]
+          pos, mark, matched = last+1, last+1, true
+          break
+        end
+      end
+    end
+    if not matched then pos = pos + 1 end
+  end
+  out[#out+1] = string.sub(text,mark)
+  return table.concat(out)
+end
+
+-- 只翻译可见文本。超链接 ID、纹理路径、颜色控制符原样通过，不能拿它们做替换。
+function zh.Text(text)
+  if not zh.enabled or type(text) ~= "string" or text == "" then return text end
+  buildDisplayIndex()
+  if direct[text] then return direct[text] end
+  -- 队友姓名必须原样显示，即使恰好与 NPC 同名；只翻译它后面的目标文字。
+  local partyPrefix, objective=string.match(text,"^(|cffaaaaaa%- |r|c%x%x%x%x%x%x%x%x[^|]+|r: )(.*)$")
+  if partyPrefix then return partyPrefix..zh.Text(objective) end
+  local out, pos = {}, 1
+  while pos <= #text do
+    local pipe = string.find(text,"|",pos,true)
+    if not pipe then out[#out+1] = plainText(string.sub(text,pos)); break end
+    out[#out+1] = plainText(string.sub(text,pos,pipe-1))
+    local code = string.sub(text,pipe,pipe+1)
+    if code == "|H" then
+      local open = string.find(text,"|h",pipe+2,true)
+      local close = open and string.find(text,"|h",open+2,true)
+      if not close then out[#out+1]=string.sub(text,pipe); break end
+      local header=string.sub(text,pipe,open+1)
+      local label=string.sub(text,open+2,close-1)
+      local linkKind=string.match(header,"^|H([^:]+):")
+      out[#out+1]=header
+      out[#out+1]=(linkKind=="item" or linkKind=="quest") and plainText(label) or label
+      out[#out+1]="|h"; pos=close+2
+    elseif code == "|T" then
+      local close=string.find(text,"|t",pipe+2,true)
+      if not close then out[#out+1]=string.sub(text,pipe); break end
+      out[#out+1]=string.sub(text,pipe,close+1); pos=close+2
+    elseif code == "|c" and string.match(string.sub(text,pipe+2,pipe+9),"^%x%x%x%x%x%x%x%x$") then
+      out[#out+1]=string.sub(text,pipe,pipe+9); pos=pipe+10
+    else
+      out[#out+1]=code; pos=pipe+2
+    end
+  end
+  return table.concat(out)
+end
+
+function zh.Name(kind, id, fallback)
+  local db = zh.enabled and pfDB and pfDB[kind]
+  local value = db and db["zhCN-epoch"] and db["zhCN-epoch"][tonumber(id)]
+  if kind == "quests" and type(value) == "table" then value = value.T end
+  return type(value) == "string" and value ~= "" and value or fallback
+end
+
+function zh.Quest(id)
+  local db = zh.enabled and pfDB and pfDB.quests
+  return db and db["zhCN-epoch"] and db["zhCN-epoch"][tonumber(id)] or nil
+end
+
+local classes = {WARRIOR="战士",PALADIN="圣骑士",HUNTER="猎人",ROGUE="潜行者",
+  PRIEST="牧师",DEATHKNIGHT="死亡骑士",SHAMAN="萨满祭司",MAGE="法师",WARLOCK="术士",DRUID="德鲁伊"}
+local races = {Human="人类",Dwarf="矮人",NightElf="暗夜精灵",Gnome="侏儒",Draenei="德莱尼",
+  Orc="兽人",Scourge="亡灵",Undead="亡灵",Tauren="牛头人",Troll="巨魔",BloodElf="血精灵",Goblin="地精",HighElf="高等精灵"}
+
+function zh.Format(text)
+  if type(text) ~= "string" then return text end
+  local class, classID = UnitClass("player")
+  local race, raceID = UnitRace("player")
+  local values = {N=UnitName("player") or "",C=classes[classID] or class or "",R=races[raceID] or race or "",B="\n"}
+  text=string.gsub(text,"%$([NnCcRrBb])",function(key) return values[string.upper(key)] end)
+  return string.gsub(text,"%$[Gg]([^:]*):([^;]*);",function(male,female)
+    return UnitSex("player")==3 and female or male
+  end)
+end
 
 local function notify(text)
-  if DEFAULT_CHAT_FRAME then
-    DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpfQuest-epoch-zhCN:|r " .. text)
-  end
+  if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpfQuest-epoch-zhCN:|r "..text) end
 end
 
 SLASH_PFQUESTEPOCHZH1 = "/pfqzh"
 SlashCmdList.PFQUESTEPOCHZH = function(command)
-  command = (command or ""):lower():match("^%s*(.-)%s*$")
-  if command == "on" then
-    pfQuest_epoch_zhCNEnabled = true
-    pfQuest_epoch_zhCNInitialized = nil
-    notify("简体中文已启用，请输入 /reload 生效。")
-  elseif command == "off" then
-    pfQuest_epoch_zhCNEnabled = false
-    if pfQuest_config and pfQuest_config.translate == "zhCN" then
-      pfQuest_config.translate = nil
+  command=string.lower(tostring(command or "")):match("^%s*(.-)%s*$")
+  if command=="on" or command=="off" then
+    local enable = command=="on"
+    pfQuest_epoch_zhCNEnabled=enable
+    local saved=pfQuest_epoch_zhCNCharDB
+    if pfQuest_config and type(saved)=="table" then
+      if enable then
+        if pfQuest_config.translate~="zhCN" then saved.previousTranslate=pfQuest_config.translate or false end
+        pfQuest_config.translate="zhCN"
+      elseif pfQuest_config.translate=="zhCN" then
+        pfQuest_config.translate=saved.previousTranslate or nil
+      end
     end
-    notify("简体中文已关闭，请输入 /reload 生效。")
+    notify("已保存为"..(enable and "启用" or "关闭").."，输入 /reload 后生效。")
   else
-    notify("状态：" .. (zh.enabled and "已启用" or "已关闭") .. "。命令：/pfqzh on 或 /pfqzh off")
+    local pending=pfQuest_epoch_zhCNEnabled~=false
+    notify("当前："..(zh.enabled and "已启用" or "已关闭")..
+      (pending~=zh.enabled and "；有待重载的设置" or "").."。/pfqzh on 开启，/pfqzh off 关闭。")
   end
 end
 
-if zh.enabled and pfDB and pfDB.locales then
-  -- pfQuest core has already loaded, removed unused locales and merged its
-  -- expansion databases. We register zhCN only *after* upstream data patching.
-  pfDB.locales.zhCN = "简体中文"
-
-  for _, kind in ipairs(kinds) do
-    local container = pfDB[kind]
-    local extra = container and container["zhCN-epoch"]
-    if container and extra then
-      local current = container.zhCN or {}
-      for id, value in pairs(extra) do current[id] = value end
-      if getmetatable(current) == nil then
-        -- Translation button and display helper may access a missing ID. The
-        -- vanilla EN record is used only as fallback; its values stay intact.
-        setmetatable(current, { __index = container.enUS })
-      end
-      container.zhCN = current
+local function initialize()
+  if zh.ready then return end
+  zh.ready=true
+  if pfQuest_epoch_zhCNEnabled==nil then pfQuest_epoch_zhCNEnabled=true end
+  zh.enabled=pfQuest_epoch_zhCNEnabled~=false
+  if type(pfQuest_epoch_zhCNCharDB)~="table" then pfQuest_epoch_zhCNCharDB={} end
+  local saved=pfQuest_epoch_zhCNCharDB
+  if not zh.enabled then return end
+  if not pfDB or not pfDatabase or not pfDB.locales then
+    zh.enabled=false; notify("基础插件尚未就绪，已停止中文扩展，未改写原始任务数据。")
+    return
+  end
+  pfDB.locales.zhCN="简体中文"
+  for _,kind in ipairs(kinds) do
+    local db=pfDB[kind]
+    if db and db["zhCN-epoch"] then
+      -- 复制，而非原地修改：中文客户端的 loc 可能正指向旧的 zhCN 表。
+      local localized={}
+      for id,value in pairs(db.zhCN or {}) do localized[id]=value end
+      for id,value in pairs(db["zhCN-epoch"]) do localized[id]=value end
+      setmetatable(localized,{__index=db.enUS})
+      db.zhCN=localized
     end
   end
-
-  -- pfQuest-WotLK already contains maintained zhCN UI phrasing. The fork
-  -- embeds only that MIT-licensed locale table, without touching the base.
-  if pfQuest_Loc and pfQuestEpochZhCN_UI then
-    for key, value in pairs(pfQuestEpochZhCN_UI) do
-      pfQuest_Loc[key] = value
+  if not saved.initialized then
+    saved.initialized=true
+    if not EpochCN and pfQuest_config and pfQuest_config.translate==nil then
+      saved.previousTranslate=false
+      pfQuest_config.translate="zhCN"
     end
   end
-
-  -- A one-time default; a user's later language selection is never reset.
-  if not pfQuest_epoch_zhCNInitialized then
-    if pfQuest_config and not pfQuest_config.translate then
-      pfQuest_config.translate = "zhCN"
-    end
-    pfQuest_epoch_zhCNInitialized = true
-  end
-end
-
-function zh.Name(kind, id, fallback)
-  if not zh.enabled or not pfDB or not pfDB[kind] then return fallback end
-  local translated = pfDB[kind]["zhCN-epoch"]
-  local text = translated and translated[id]
-  if kind == "quests" and type(text) == "table" then text = text.T end
-  return (text and text ~= "") and text or fallback
-end
-
-function zh.Quest(id)
-  if not zh.enabled or not pfDB or not pfDB.quests then return nil end
-  return pfDB.quests["zhCN-epoch"] and pfDB.quests["zhCN-epoch"][id]
-end
-
-if zh.enabled and pfDatabase then
-  -- Only look up Chinese names when vanilla English matching has no hit.
-  -- This preserves quest ID resolution on English Project Epoch clients.
-  local originalGetIDByName = pfDatabase.GetIDByName
-  if type(originalGetIDByName) == "function" then
-    function pfDatabase:GetIDByName(name, kind, partial, server)
-      local result = originalGetIDByName(self, name, kind, partial, server)
-      if next(result or {}) or type(name) ~= "string" or not kind then
-        return result
-      end
-      -- ASCII lookups are always handled by the original implementation.
-      if not string.find(name, "[\128-\255]") then return result end
-      local entries = pfDB[kind] and pfDB[kind]["zhCN-epoch"]
-      if not entries then return result end
-      result = result or {}
-      for id, localized in pairs(entries) do
-        local label = type(localized) == "table" and localized.T or localized
-        local permit = not server or (pfQuest_server and pfQuest_server[kind] and pfQuest_server[kind][id])
-        if label and permit then
-          local matched = false
-          if partial == true then
-            matched = string.find(string.lower(label), string.lower(name), 1, true) ~= nil
-          elseif partial == "LOWER" then
-            matched = string.lower(label) == string.lower(name)
-          else
-            matched = label == name
+  buildDisplayIndex()
+  local originalFind=pfDatabase.GetIDByName
+  if type(originalFind)=="function" then
+    function pfDatabase:GetIDByName(name,kind,partial,server)
+      local result=originalFind(self,name,kind,partial,server)
+      if type(result)=="table" and next(result) then return result end
+      local db=pfDB[kind]
+      if type(name)~="string" or not db then return result end
+      result=result or {}
+      local catalogues={}
+      if db.loc~=db.enUS then catalogues[#catalogues+1]=db.enUS or {} end
+      if chinese(name) then catalogues[#catalogues+1]=db["zhCN-epoch"] or {} end
+      for _,entries in ipairs(catalogues) do
+        for id,value in pairs(entries) do
+          local label=kind=="quests" and type(value)=="table" and value.T or value
+          local allowed=not server or (pfQuest_server and pfQuest_server[kind] and pfQuest_server[kind][id])
+          if type(label)=="string" and allowed then
+            local match=label==name
+            if partial==true then match=string.find(string.lower(label),string.lower(name),1,true)~=nil
+            elseif partial=="LOWER" then match=string.lower(label)==string.lower(name) end
+            if match then result[id]=label end
           end
-          if matched then result[id] = label end
         end
       end
       return result
     end
   end
-
-  local displayNamesCache = nil
-  local function getDisplayNames()
-    if displayNamesCache then return displayNamesCache end
-    local displayNames = {}
-    for _, kind in ipairs({"items", "units", "objects"}) do
-        local db = pfDB[kind]
-        if db and db.enUS and db["zhCN-epoch"] then
-          for entryID, translated in pairs(db["zhCN-epoch"]) do
-            local original = db.enUS[entryID]
-            if type(original) == "string" and original ~= translated then
-              if displayNames[original] and displayNames[original] ~= translated then
-                displayNames[original] = false -- avoid ambiguous English homonyms
-              elseif displayNames[original] == nil then
-                displayNames[original] = translated
-              end
-            end
-          end
-        end
-      end
-    displayNamesCache = displayNames
-    return displayNamesCache
-  end
-
-  -- Render Chinese in pfQuest's extended tooltip after its original logic
-  -- completes; the English source records and search keys never change.
-  local originalTooltip = pfDatabase.ShowExtendedTooltip
-  if type(originalTooltip) == "function" then
-    function pfDatabase:ShowExtendedTooltip(id, tooltip, ...)
-      local result = originalTooltip(self, id, tooltip, ...)
-      local record = zh.Quest(id)
-      if not record then return result end
-      local source = pfDB.quests.enUS and pfDB.quests.enUS[id]
-      local target = tooltip or GameTooltip
-      if not source or not target or not target.GetName or not target.NumLines then
-        return result
-      end
-      local name = target:GetName()
-      if not name then return result end
-      local replacements = {}
-      for _, field in ipairs({"T", "O", "D"}) do
-        if record[field] and source[field] and record[field] ~= source[field] then
-          local originalText = self:FormatQuestText(source[field])
-          local chineseText = self:FormatQuestText(record[field])
-          replacements[originalText] = chineseText
-        end
-      end
-      -- Quest Start/End NPC/item/object names are rendered as right-hand
-      -- tooltip rows; translate only exact known English names, never IDs.
-      local displayNames = getDisplayNames()
-      for line = 1, target:NumLines() do
-        local label = _G[name .. "TextLeft" .. line]
-        if label and label.GetText and label.SetText then
-          local current = label:GetText()
-          if current and replacements[current] then
-            label:SetText(replacements[current])
-          end
-        end
-        local right = _G[name .. "TextRight" .. line]
-        if right and right.GetText and right.SetText then
-          local raw = right:GetText()
-          if raw then
-            local localized = string.gsub(raw, "([^,]+)", function(piece)
-              local left, original, rightSpace = string.match(piece, "^(%s*)(.-)(%s*)$")
-              local replacement = displayNames[original]
-              if not replacement then return piece end
-              return left .. replacement .. rightSpace
-            end)
-            if localized ~= raw then right:SetText(localized) end
-          end
-        end
-      end
-      if target.Show then target:Show() end
-      return result
+  local originalFormat=pfDatabase.FormatQuestText
+  if type(originalFormat)=="function" then
+    function pfDatabase:FormatQuestText(text)
+      -- 只处理属于本地中文数据的模板；任务匹配所用的英文格式化完全走原函数。
+      if ownedQuestText[text] then return zh.Format(text) end
+      return originalFormat(self,text)
     end
   end
+  if zh.InstallDisplayHooks then zh.InstallDisplayHooks() end
 end
+
+local loader=CreateFrame("Frame")
+loader:RegisterEvent("ADDON_LOADED")
+loader:RegisterEvent("PLAYER_LOGIN")
+loader:SetScript("OnEvent",function(self,eventName,addon)
+  eventName=eventName or event; addon=addon or arg1
+  if eventName=="ADDON_LOADED" and addon=="pfQuest-epoch" then
+    initialize(); self:UnregisterEvent("ADDON_LOADED")
+  elseif eventName=="PLAYER_LOGIN" and zh.enabled and zh.RefreshOwnedUI then
+    zh.RefreshOwnedUI(); self:UnregisterEvent("PLAYER_LOGIN")
+  end
+end)

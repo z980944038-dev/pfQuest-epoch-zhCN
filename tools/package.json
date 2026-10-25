@@ -1,1 +1,11 @@
-{"name":"pfquest-epoch-zhcn-validation","private":true,"version":"1.0.0","scripts":{"test":"node verify_lua.js && node verify_runtime.js"},"devDependencies":{"luaparse":"0.3.1","fengari":"0.1.4"}}
+{
+  "name": "pfquest-epoch-zhcn-validation",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "test": "python3 run_checks.py --bootstrap"
+  },
+  "devDependencies": {
+    "luaparse": "0.3.1"
+  }
+}

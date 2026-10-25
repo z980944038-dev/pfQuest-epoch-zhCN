@@ -7,7 +7,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 root=Path(__file__).resolve().parent.parent
 parser=argparse.ArgumentParser()
-parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-beta.1.zip')
+parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-beta.2.zip')
 args=parser.parse_args()
 files=[]
 for p in root.rglob('*'):
@@ -25,7 +25,7 @@ args.output.parent.mkdir(parents=True,exist_ok=True)
 with ZipFile(args.output,'w',compression=ZIP_DEFLATED,compresslevel=9) as archive:
     for path in sorted(files):
         rel='pfQuest-epoch/'+path.relative_to(root).as_posix()
-        zi=ZipInfo(rel,date_time=(2026,10,25,0,0,0))
+        zi=ZipInfo(rel,date_time=(2026,10,26,0,0,0))
         zi.compress_type=ZIP_DEFLATED
         zi.external_attr=0o644<<16
         archive.writestr(zi,path.read_bytes())

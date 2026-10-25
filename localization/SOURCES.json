@@ -6,5 +6,22 @@
   "pfquest_core": "https://github.com/shagu/pfQuest",
   "pfquest_core_release": "7.0.1",
   "pfquest_core_license": "MIT",
-  "usage": "Derived translation data only; no complete third-party addon redistributed."
+  "usage": "Derived translation data only; no complete third-party addon redistributed.",
+  "reviewed_overrides_sha256": "69caaac27b54483a4a48f87b95660199546f42f8f3f6175cb1db4f41600865e5",
+  "input_sha256": {
+    "EpochHeadData.lua": "6358c3b48cf452cd1609a426279512f90f3e8fd65cad6cd34ea1a0b3de5b325c",
+    "EpochItemData.lua": "e759a89949ada35f596a6dfbfdd0de89542e84c3f0fc789dde328ec15a5c37e9",
+    "EpochQuestData.lua": "e06ca426d0a79223218c8ca28d8535acd22a130b9028612bdcbcb6e0ddbe5651",
+    "GlobalData.lua": "f01d3d291a2bb9ced02f05833a10b3ae730a4072ac774bdff955b4329bed3eb1",
+    "Glossary.lua": "cc01b90c97e415df063504c2fbb1412cefde62fa6e24e9ca82bf4baf7081702f",
+    "ItemData.lua": "3dd9f6dde87eebb74db339f670013e85e82dd3f2fc879b850d7917d8142bf4c4",
+    "ItemNameMap.lua": "db6624c7840dd77a6f64d1e5c65c331f3076e23f34301695d7a0ec5efc212211",
+    "MapData.lua": "163953377ba3a4c573a9f75a55ed966bcb9566af5768e46355d87b09ea966901",
+    "ObjectiveNameData.lua": "c9a2c2a13d1d5250012877d7f3549e9811f793e0297ed46f555366a3d5096e2a",
+    "QuestCN_Data.lua": "e4997002072d5f52b48ececc69b3f969f5f57d27b21c796883482b0014853a47",
+    "QuestTitleIndex.lua": "8aeca2c223d5a048faf25f4532aa66db4e8778cedc6ad59462b776bfa4d292f3",
+    "UnitData.lua": "2e94f67f1e203592b958999221e54d9ae9e49288c2c29797b843ead57c957753",
+    "UnitNameDict.lua": "1ae8d69bd4b0fd94ea06ed0958701a7061ce695d3d4f9347b7b8dccb17bd02da"
+  },
+  "manual_names": "Community localization, not an official translation or proof of live-server correctness."
 }
