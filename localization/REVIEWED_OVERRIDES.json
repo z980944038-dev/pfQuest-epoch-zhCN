@@ -17290,6 +17290,30 @@
         "source_sha256": "97a24718db184678594fa4c9420dc7777c56060c9615aa39d18dfa26f4fc9526",
         "text": "埃弗里特的待洗衣物",
         "reason": "Beta3对照英文清理残留或明确误译，数字与物品ID不变"
+      },
+      "61834": {
+        "english": "Scorched Felheart Belt",
+        "source_sha256": "27e6fdead0d95f7714d7c902d40a06f33e6f8a64fd215fa2306698b190b10a0a",
+        "text": "焦灼的恶魔之心腰带",
+        "reason": "收尾复核：按当前英文修正装备部位、信件类型及工程图纸术语；不变更 ID"
+      },
+      "62280": {
+        "english": "Invisible Inked Letter",
+        "source_sha256": "5fd7279e911ceeedc58ab042795ea3ede232889c6d724f0b0d188472099c92eb",
+        "text": "隐形墨水书信",
+        "reason": "收尾复核：按当前英文修正装备部位、信件类型及工程图纸术语；不变更 ID"
+      },
+      "60186": {
+        "english": "Schematic: Lens of Kajal",
+        "source_sha256": "78f7d722458552df48ff01a62b5cb03edb4b279d892924f970dab97bca8b44c8",
+        "text": "结构图：卡加尔镜片",
+        "reason": "收尾复核：按当前英文修正装备部位、信件类型及工程图纸术语；不变更 ID"
+      },
+      "90547": {
+        "english": "Schematic: Complicated Components",
+        "source_sha256": "95d04cd1e5073111c7b6151947623e4ea714ab2b6ba8d452671df16da9997771",
+        "text": "结构图：复杂组件",
+        "reason": "收尾复核：按当前英文修正装备部位、信件类型及工程图纸术语；不变更 ID"
       }
     }
   }

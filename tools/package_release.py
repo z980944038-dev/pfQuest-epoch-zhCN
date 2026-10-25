@@ -7,7 +7,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 root=Path(__file__).resolve().parent.parent
 parser=argparse.ArgumentParser()
-parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-beta.3.zip')
+parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-rc.1.zip')
 args=parser.parse_args()
 files=[]
 for p in root.rglob('*'):

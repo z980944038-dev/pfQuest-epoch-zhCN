@@ -81,6 +81,15 @@ def verify() -> dict:
             require(path.relative_to(ROOT.resolve()).as_posix() in actual,'XML target missing or wrong case: '+target)
     require('_, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle' not in (ROOT/'pfQuest-tooltip.lua').read_text(),'7th-value completion bug reintroduced')
     residual_audit=audit_english()
+    # 已校订译名必须与产物逐字一致，不能只核对原文哈希。
+    for kind,entries in overrides['names'].items():
+        generated=parse_id_strings((ROOT/f'db/zhCN/{kind}-epoch.lua').read_text('utf-8'))
+        for ident,entry in entries.items():
+            require(generated.get(int(ident))==entry['text'],f'Reviewed output mismatch: {kind}:{ident}')
+    version=re.search(r'^## X-Localization-Version: (.+)$',text,re.M).group(1).strip()
+    require(report['localization_version']==version,'Localization version mismatch')
+    runtime=(ROOT/'localization/zhCN.lua').read_text('utf-8')
+    require(('version = "'+version+'"') in runtime,'Runtime version mismatch')
     require((ROOT/'localization/LICENSE-LibBabble-MIT.txt').is_file(),'Missing LibBabble MIT attribution')
     for ident,fields in overrides['quests'].items():
         for field,entry in fields.items():

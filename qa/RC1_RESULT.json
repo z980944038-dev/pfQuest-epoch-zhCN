@@ -1,0 +1,655 @@
+{
+  "status": "pass",
+  "lua_version": "Lua 5.1",
+  "native_lua_source_sha256": "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333",
+  "base_release_sha256": "b81ef4dd3b19fc8893da525e91d7dd6869a180cc2b9bf0943f769c1ad0bfb34c",
+  "base_lua_files_pinned": 49,
+  "syntax_files": 40,
+  "scenarios": {
+    "fresh": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tfresh\t5000_display_calls_seconds\t0.1657\nPASS\tfresh\t81\thooks\t17\tlua_kib\t154881",
+    "disabled": "PASS\tdisabled\t28",
+    "reset-language": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\treset-language\t5000_display_calls_seconds\t0.1291\nPASS\treset-language\t81\thooks\t17\tlua_kib\t154882",
+    "custom-locale": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tcustom-locale\t5000_display_calls_seconds\t0.1789\nPASS\tcustom-locale\t81\thooks\t17\tlua_kib\t154882",
+    "coexist": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tcoexist\t5000_display_calls_seconds\t0.1403\nPASS\tcoexist\t88\thooks\t17\tlua_kib\t154891",
+    "native-zhCN": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tnative-zhCN\t5000_display_calls_seconds\t0.1653\nPASS\tnative-zhCN\t81\thooks\t17\tlua_kib\t154870",
+    "corrupt-state": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tcorrupt-state\t5000_display_calls_seconds\t0.1181\nPASS\tcorrupt-state\t81\thooks\t17\tlua_kib\t154882",
+    "female": "ALL_OUTPUT_TEXT_INVARIANT\t18549\nBENCHMARK\tfemale\t5000_display_calls_seconds\t0.1334\nPASS\tfemale\t81\thooks\t17\tlua_kib\t154881"
+  },
+  "full_load_scenarios": {
+    "fresh": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tfresh\tfiles\t99\tchecks\t34\tframes\t926\tmessages\t5\tprotocol_packets\t7",
+    "disabled": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tdisabled\tfiles\t99\tchecks\t28\tframes\t926\tmessages\t3\tprotocol_packets\t7",
+    "zhCN": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tzhCN\tfiles\t99\tchecks\t34\tframes\t926\tmessages\t5\tprotocol_packets\t7",
+    "upgrade": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tupgrade\tfiles\t99\tchecks\t35\tframes\t926\tmessages\t5\tprotocol_packets\t7",
+    "coexist": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tcoexist\tfiles\t99\tchecks\t35\tframes\t926\tmessages\t5\tprotocol_packets\t7",
+    "party": "LOADED\tpfQuest-wotlk\t61\tfiles\t399\tUI doubles\nLOADED\tpfQuest-epoch\t99\tfiles\t427\tUI doubles\nPASS_FULL_LOAD\tparty\tfiles\t99\tchecks\t38\tframes\t926\tmessages\t5\tprotocol_packets\t9"
+  },
+  "negative_controls_rejected": [
+    "objective_quantity",
+    "english_source_drift",
+    "toc_filename_case",
+    "missing_saved_state",
+    "item_name_contamination",
+    "unclassified_english",
+    "lost_emote_command",
+    "reviewed_output_drift",
+    "version_mismatch",
+    "id_link_regression",
+    "hidden_tooltip_regression",
+    "native_button_regression"
+  ],
+  "data": {
+    "quest_ids": 2390,
+    "quest_fields": 7170,
+    "source_baselines": 13,
+    "critical_data_failures": 0,
+    "english_residual_audit": {
+      "status": "pass",
+      "quest_fields_checked": 7170,
+      "localized_names_checked": {
+        "items": 5948,
+        "units": 2265,
+        "objects": 803,
+        "zones": 2363
+      },
+      "unclassified_residuals": 0,
+      "known_item_name_contamination": 0,
+      "preserved_technical_or_fictional_entries": [
+        {
+          "kind": "quests",
+          "id": 26338,
+          "field": "O",
+          "reason": "机构编号保留，并加军情七处中文解释",
+          "literals": [
+            "SI:7"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 26338,
+          "field": "D",
+          "reason": "机构编号保留，并加军情七处中文解释",
+          "literals": [
+            "SI:7"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 26893,
+          "field": "D",
+          "reason": "剧情中的署名缩写，不能推测未揭示的全名",
+          "literals": [
+            "W.P."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 26931,
+          "field": "D",
+          "reason": "角色以单字母代号称呼，保留该代号",
+          "literals": [
+            "K"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27082,
+          "field": "O",
+          "reason": "必须实际输入的鞠躬表情命令，不能翻译命令本身",
+          "literals": [
+            "/bow"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27127,
+          "field": "O",
+          "reason": "人物姓名首字母，保留可识别性",
+          "literals": [
+            "M."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27127,
+          "field": "D",
+          "reason": "人物姓名首字母，保留可识别性",
+          "literals": [
+            "M."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27128,
+          "field": "D",
+          "reason": "人物姓名首字母，保留可识别性",
+          "literals": [
+            "M."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27289,
+          "field": "D",
+          "reason": "信件署名缩写，属于剧情线索",
+          "literals": [
+            "R.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27290,
+          "field": "D",
+          "reason": "信件署名缩写，属于剧情线索",
+          "literals": [
+            "R.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27450,
+          "field": "T",
+          "reason": "组织原文缩写，原段落没有提供可核对的全称",
+          "literals": [
+            "A.S.S."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27450,
+          "field": "O",
+          "reason": "组织原文缩写，原段落没有提供可核对的全称",
+          "literals": [
+            "A.S.S."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27509,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "S.J."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27510,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "S.J."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27511,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "S.J."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27512,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "S.J."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27532,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27532,
+          "field": "D",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27534,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27537,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27538,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27539,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27561,
+          "field": "O",
+          "reason": "装置型号缩写，中文说明已补充",
+          "literals": [
+            "B.T.L.R."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27947,
+          "field": "O",
+          "reason": "机构编号保留，并加军情七处中文解释",
+          "literals": [
+            "SI:7"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27970,
+          "field": "D",
+          "reason": "原文已解释全称的装置缩写",
+          "literals": [
+            "F.A.I.L.S.A.F.E."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27972,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27973,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27974,
+          "field": "O",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 27975,
+          "field": "D",
+          "reason": "人物姓名首字母",
+          "literals": [
+            "J.D."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 28373,
+          "field": "O",
+          "reason": "机构编号保留，并加军情七处中文解释",
+          "literals": [
+            "SI:7"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 28390,
+          "field": "O",
+          "reason": "双手武器的技术标记，已加中文解释并保留原标签",
+          "literals": [
+            "2H"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 28415,
+          "field": "O",
+          "reason": "双手武器的技术标记，已加中文解释并保留原标签",
+          "literals": [
+            "2H"
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 28725,
+          "field": "D",
+          "reason": "侏儒紧急集结通道原名缩写；仅在介绍处说明",
+          "literals": [
+            "G.E.A.R."
+          ]
+        },
+        {
+          "kind": "quests",
+          "id": 31033,
+          "field": "D",
+          "reason": "剧情明确要求破译的恶魔语铭文，逐字保留原文，不臆造译义",
+          "literals": [
+            "Rikk alar il xi zennrakkan lok Kirasath Raka ruk asj xi veni parn kar lok revola rukadare il Karazhan. Lok kamil buras naztheros arakalada xi daz veni. Rikk lok parn il asj xi Z gular maladath lok buras kanrethad il lok kamil. Kiel ashjrethul ante buras gul revos. \nIl kirasath Vorakem Zekulrakkas Archim il Aman Veni Kazzak."
+          ]
+        },
+        {
+          "kind": "items",
+          "id": 64932,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "A"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 45294,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "G"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46032,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "M"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46278,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "S",
+            "J"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46716,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "A"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46768,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46769,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46770,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46771,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46772,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46773,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46774,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "units",
+          "id": 46775,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "SOS"
+          ]
+        },
+        {
+          "kind": "zones",
+          "id": 4418,
+          "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+          "literals": [
+            "K3"
+          ]
+        }
+      ],
+      "untranslated_special_objects": [
+        {
+          "id": 250088,
+          "english": "Doodad_BOSSGATE02",
+          "reason": "内部模型标识，不当作玩家物体名称翻译"
+        },
+        {
+          "id": 250389,
+          "english": "",
+          "reason": "上游空名称，不凭空补写"
+        },
+        {
+          "id": 250390,
+          "english": "",
+          "reason": "上游空名称，不凭空补写"
+        },
+        {
+          "id": 250564,
+          "english": "",
+          "reason": "上游空名称，不凭空补写"
+        },
+        {
+          "id": 250630,
+          "english": "",
+          "reason": "上游空名称，不凭空补写"
+        },
+        {
+          "id": 250631,
+          "english": "",
+          "reason": "上游空名称，不凭空补写"
+        },
+        {
+          "id": 250636,
+          "english": "Ssaggh ez oou Uul'gwa Ryiu",
+          "reason": "虚构语言铭文，不臆造译义"
+        },
+        {
+          "id": 250637,
+          "english": "Ssaggh ez oou Par'okoth Vwyq",
+          "reason": "虚构语言铭文，不臆造译义"
+        },
+        {
+          "id": 250638,
+          "english": "Ssagh ez oou Yyg'far Vwah",
+          "reason": "虚构语言铭文，不臆造译义"
+        },
+        {
+          "id": 250639,
+          "english": "Ssaggh ez oou Lwhuk Ak'agthshi",
+          "reason": "虚构语言铭文，不臆造译义"
+        }
+      ],
+      "scope": "Chinese quest/entity database strings; original English matching tables, code/protocol keys, URLs, brand names and developer diagnostics are outside this metric.",
+      "semantic_review_complete": false,
+      "live_game_tested": false
+    },
+    "name_coverage": {
+      "items": {
+        "translated": 5948,
+        "total": 5948,
+        "untranslated": 0
+      },
+      "units": {
+        "translated": 2265,
+        "total": 2265,
+        "untranslated": 0
+      },
+      "objects": {
+        "translated": 803,
+        "total": 813,
+        "untranslated": 10
+      },
+      "zones": {
+        "translated": 2363,
+        "total": 2363,
+        "untranslated": 0
+      }
+    },
+    "remaining_names": {
+      "items": [],
+      "units": [],
+      "objects": [
+        {
+          "id": 250088,
+          "english": "Doodad_BOSSGATE02"
+        },
+        {
+          "id": 250389,
+          "english": ""
+        },
+        {
+          "id": 250390,
+          "english": ""
+        },
+        {
+          "id": 250564,
+          "english": ""
+        },
+        {
+          "id": 250630,
+          "english": ""
+        },
+        {
+          "id": 250631,
+          "english": ""
+        },
+        {
+          "id": 250636,
+          "english": "Ssaggh ez oou Uul'gwa Ryiu"
+        },
+        {
+          "id": 250637,
+          "english": "Ssaggh ez oou Par'okoth Vwyq"
+        },
+        {
+          "id": 250638,
+          "english": "Ssagh ez oou Yyg'far Vwah"
+        },
+        {
+          "id": 250639,
+          "english": "Ssaggh ez oou Lwhuk Ak'agthshi"
+        }
+      ],
+      "zones": []
+    },
+    "live_game_tested": false
+  },
+  "deterministic_zip_sha256": "d3b2e6ce1bcfd8851dd97578eece52b7e703083376d67e861c7986a1e3a480d9",
+  "zip_file_count": 51,
+  "tested_source_sha256": {
+    "db/areatrigger-epoch.lua": "ab0519a2aa5b97abf43f2161755075a971171c1fb2fdf25839977efe5bde45d6",
+    "db/enUS/items-epoch.lua": "123abb30bcd86f4d1a5e6f2fcce3a187ffcd4bf465c5393668f8a4eb0918cdd2",
+    "db/enUS/objects-epoch.lua": "6c5b3cb88ef4b8c02ff6eb46daab25c00c051c1e47434e837620ff4a4112947e",
+    "db/enUS/professions-epoch.lua": "f4a7bd98f7d92713c2a7c509f7d024c57e430206026d9aa94b2f1af0cc4b740e",
+    "db/enUS/quests-epoch.lua": "42da43340756d3d3a0eafea39cfb3d537c723135d8858a47802210136960ddcd",
+    "db/enUS/units-epoch.lua": "005d1d3370b1b08749924751fbda8971de69834e86059945d1e3c775e6c794bc",
+    "db/enUS/zones-epoch.lua": "e49da2acea53944c2aafc4023a12a4d9b06c4c9412825d15a09714d16ce5b15a",
+    "db/items-epoch.lua": "6675c40af734e2a87003735c881bb83a42883935faecbc6a7854e9a2a0ed14e4",
+    "db/meta-epoch.lua": "de40bf230a4932adb05d9397aede8e186f5b51195eca91aa9bd0b9d68f1ba86a",
+    "db/minimap-epoch.lua": "a0432eb8655496f1cdec6172a54623985c5b190ac44fe6f30702c17ad97769c5",
+    "db/objects-epoch.lua": "110133edc4d8de1c1ab186c36470d1b64aa39e6810316ebb31343cb637c12163",
+    "db/quests-epoch.lua": "c81ca5bf7f0f6d9211120232de8bff481f7436094063c11c2845785c66bfeae8",
+    "db/quests-itemreq-epoch.lua": "f949fbcd14da2d7e574c2783f2f5502c695178dc1f0971f138e2a526eb0883ca",
+    "db/refloot-epoch.lua": "a01f5c842daa57f556c255e6d82f792710c0fc04971a16756d3356664373da91",
+    "db/units-epoch.lua": "6a9bfe75734706e8051406b6bfc3ae8724888dadc41c9f93d4f5260b0877280f",
+    "db/zhCN/items-epoch.lua": "a390dc1ef3b773daf36aa7288752ac0023d63bdbcad3a14e558e4e71c4003872",
+    "db/zhCN/objects-epoch.lua": "813da4a22b3b9a67eacc907edd134ae50e888a1c5f78da67a73b8af25daba617",
+    "db/zhCN/professions-epoch.lua": "16566c44a45d8591d7c2e4ca6eb30f1cf354af3b95731125c3cc76717eb047aa",
+    "db/zhCN/quests-epoch.lua": "9d3c166675a1fc4267926a89f4bbadf6e5afda05beecac21d110a0387cfee876",
+    "db/zhCN/units-epoch.lua": "5296802cff4b84bf9b4a3836bda1d88d29c330b2fd6841ff7c79a9067eb76606",
+    "db/zhCN/zones-epoch.lua": "d8b99e6b151bcaf1f4e14a6c3764dc6d112a2bb879174177fad5a55ac4876f12",
+    "db/zones-epoch.lua": "7b9e9452bfa3f2616cca24bf3b5310f73bfc5ae098e7f0736c41194d7ae50f03",
+    "localization/compat-epochcn.lua": "61dec192e88cbaa3443d29465521023f68972f76b6c4324f32591b09448165ad",
+    "localization/zhCN-display.lua": "26c4607bac84cf60fa80e04540b2477070baa1ea1db4095142d040fe9a1b4496",
+    "localization/zhCN-extra-ui.lua": "8b2d37c251d7e595b3963cf0724609b49789f3d4a271d148a8e56ca758e21aa3",
+    "localization/zhCN-ui.lua": "657b32b78198e9dbf115fccd95323bc3b0df8e3f28ace5421f5deafff627e5f1",
+    "localization/zhCN.lua": "a39f3bb0764ff8555159a1d515711a429252426eb5397d6a7553a34ebb798a31",
+    "overwrites.lua": "b9407f0fa35a7c11dc452c3cae907d57a35b8ebcba95d5a9361e948488b4c0c9",
+    "patchtable.lua": "9146a9d696fc9769525009803232b1c9d293fa492bafc07b89b4b654bbe81b43",
+    "pfQuest-announce.lua": "efeac84eea0ac837f16de9700251ed8781ae57c221cd32ea283461a0e393ebb2",
+    "pfQuest-config.lua": "a376b6a8d232c539ef58d87622c56f735d7ee53e1caf44464de40a4ba51735e3",
+    "pfQuest-epoch.toc": "b9e2962d514f439366448b3ac4ba346470f61eb6afbff16ce38911e634cee412",
+    "pfQuest-lootpanel.lua": "a8ff7407e6ee29be3a7188f578e4556609aeef64db97b9e561da0f61e66a7d8d",
+    "pfQuest-nameplates.lua": "4f2e95977c9e481cfc3d41853765a093092d4251cb46469db357ac4500c11590",
+    "pfQuest-tooltip.lua": "68439fde569c3096f8ba4d88caaaeb841798004d2133a47b43fa54bb12cac231",
+    "pfQuest-updater.lua": "61bad3b244ee773dca02d9d519f7fd2209905438092af52c8040329d426fca2a",
+    "pfQuest-worldmap.lua": "647a8afe0c423833300ed8f251fddf325dd10182fd84062f09fa39f51ad491ee",
+    "pfquest-arrow.lua": "8c546898e903b1f2070d45f92f5d799af2db8ab6c3786d84c0092a0c3af54dcd",
+    "pfquest-questlog.lua": "ba0721f98e9c34365befd7fca9e14bc11ef85262f634f6d7ebdb29dd37db1621",
+    "tools/audit_english.py": "b69298abfdf18ec79f3776232df47dd88c3905f135c373eaa9054976d4410539",
+    "tools/build_zhcn.py": "82a4ce231528353d38133f5198494ec80d115c08690c869430914ddc37aef853",
+    "tools/package_release.py": "0657f9d571aba5beeee17db22de0b2ecfabafa7d616b0c2b60542bba3d037b90",
+    "tools/run_checks.py": "113d1e0eb2de6064a1cd4f4c0fc2ed3daac08f4935128f636131c4ce02e9750e",
+    "tools/tests/load_all.lua": "56c8f180ef2ea9c5833f580ec7e690ca27b6ffdc3bda38c751863bfb5450fa81",
+    "tools/tests/runtime.lua": "029dbe0fab8d2d3a9744b9da8b743694f500aa1484fe3f6bf063879729721482",
+    "tools/verify_translation.py": "4b382557f60d6d4c0323237b38ec4b50d0215ccff641a580562dd6ab87f8cf6a"
+  },
+  "limits": "UI/event objects are test doubles. Full base and extension Lua modules load through actual TOC/XML order, with bounded API/UI test doubles and simulated events. No live game client, renderer, combat-taint or server session was tested."
+}

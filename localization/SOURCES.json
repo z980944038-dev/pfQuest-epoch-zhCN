@@ -7,7 +7,7 @@
   "pfquest_core_release": "7.0.1",
   "pfquest_core_license": "MIT",
   "usage": "Derived translation data only; no complete third-party addon redistributed.",
-  "reviewed_overrides_sha256": "5e370a6eebaae8eacf3569919b1f5bad42566f1e55e6b806b0ed0f2f3f7ad915",
+  "reviewed_overrides_sha256": "5e0e5d66ccf9aaddb00e1b5d5a87441830849b7abdc25821e21afca19bbacacb",
   "input_sha256": {
     "EpochHeadData.lua": "6358c3b48cf452cd1609a426279512f90f3e8fd65cad6cd34ea1a0b3de5b325c",
     "EpochItemData.lua": "e759a89949ada35f596a6dfbfdd0de89542e84c3f0fc789dde328ec15a5c37e9",

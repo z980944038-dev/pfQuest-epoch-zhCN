@@ -87,6 +87,15 @@ def main() -> None:
         require('PASS\t'+scenario+'\t' in result.stdout,scenario+' did not report success')
         logs[scenario]=result.stdout.strip()
         print(result.stdout.strip(),flush=True)
+    # TOC/XML 驱动的整套真实模块加载；不以逐个函数替代实际延迟事件。
+    full_logs={}
+    for scenario in ['fresh','disabled','zhCN','upgrade','coexist','party']:
+        command=[str(lua),str(ROOT/'tools/tests/load_all.lua'),str(base),str(ROOT),scenario]
+        result=subprocess.run(command,capture_output=True,text=True,timeout=60)
+        require(result.returncode==0,'Full load '+scenario+' FAILED\n'+result.stdout+'\n'+result.stderr)
+        require('PASS_FULL_LOAD\t'+scenario+'\t' in result.stdout,'Full load did not finish: '+scenario)
+        full_logs[scenario]=result.stdout.strip()
+        print(result.stdout.strip(),flush=True)
     # Negative controls: prove that the gate rejects the specific failure
     # classes found during review, rather than only accepting the happy path.
     rejected=[]
@@ -103,6 +112,8 @@ def main() -> None:
             ('item_name_contamination','db/zhCN/items-epoch.lua','烟林牧场运输箱','钥石：错误副本','Cross-project item-name contamination'),
             ('unclassified_english','db/zhCN/quests-epoch.lua','悬赏河爪豺狼人','悬赏河爪豺狼人 EnglishLeak','Unclassified visible English residue'),
             ('lost_emote_command','db/zhCN/quests-epoch.lua','/bow','/鞠躬','Lost protected quest literal'),
+            ('reviewed_output_drift','db/zhCN/items-epoch.lua','焦灼的恶魔之心腰带','焦灼的恶魔之心护腕','Reviewed output mismatch'),
+            ('version_mismatch','pfQuest-epoch.toc','zhCN-rc.1','zhCN-rc.9','Localization version mismatch'),
         ])
         for name,relative,before,after,diagnostic in cases:
             file=clone/relative;original=file.read_text('utf-8')
@@ -111,6 +122,21 @@ def main() -> None:
             result=subprocess.run([os.sys.executable,str(clone/'tools/verify_translation.py')],capture_output=True,text=True,timeout=30)
             file.write_text(original,encoding='utf-8')
             require(result.returncode!=0 and diagnostic in result.stderr,'Gate failed to reject injected '+name)
+            rejected.append(name)
+        runtime_cases=[
+            ('id_link_regression','localization/zhCN.lua','if name and visible==original then visible=name','if false then visible=name','tools/tests/runtime.lua','quest hyperlink did not use its stable ID'),
+            ('hidden_tooltip_regression','localization/zhCN-display.lua','zh.LocalizeTooltip(target,node.questid)','zh.LocalizeTooltip(GameTooltip); zh.LocalizeTooltip(WorldMapTooltip)','tools/tests/runtime.lua','world-map hover revived'),
+            ('native_button_regression','localization/zhCN-display.lua','if type(frame.SetText)=="function" then hooksecurefunc(frame,"SetText",refresh) end','if false then hooksecurefunc(frame,"SetText",refresh) end','tools/tests/load_all.lua','native button repaint reverted'),
+        ]
+        for name,relative,before,after,test,diagnostic in runtime_cases:
+            file=clone/relative;original=file.read_text('utf-8')
+            require(before in original,'Runtime negative fixture stale: '+name)
+            mutated=original.replace(before,after,1)
+            if name=='hidden_tooltip_regression': mutated=mutated.replace('changed and wasShown and tooltip.Show','changed and tooltip.Show')
+            file.write_text(mutated,encoding='utf-8')
+            result=subprocess.run([str(lua),str(clone/test),str(base),str(clone),'fresh'],capture_output=True,text=True,timeout=60)
+            file.write_text(original,encoding='utf-8')
+            require(result.returncode!=0 and diagnostic in result.stderr,'Runtime gate failed to reject '+name+'\n'+result.stdout+result.stderr)
             rejected.append(name)
     print('PASS: rejected injected failures:',', '.join(rejected),flush=True)
     with tempfile.TemporaryDirectory(prefix='pfquest-zhcn-package-') as temp:
@@ -130,9 +156,9 @@ def main() -> None:
     source_files=[p for p in ROOT.rglob('*') if p.is_file() and p.suffix in ('.lua','.toc','.py') and not any(x in p.parts for x in ('.qa-deps','.qa-results','node_modules','dist','.git','__pycache__'))]
     report={'status':'pass','lua_version':version,'native_lua_source_sha256':LUA_SHA,
         'base_release_sha256':BASE_SHA,'base_lua_files_pinned':len(pins),'syntax_files':len(lua_files),
-        'scenarios':logs,'negative_controls_rejected':rejected,'data':data,'deterministic_zip_sha256':digests[0],'zip_file_count':count,
+        'scenarios':logs,'full_load_scenarios':full_logs,'negative_controls_rejected':rejected,'data':data,'deterministic_zip_sha256':digests[0],'zip_file_count':count,
         'tested_source_sha256':{p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(source_files)},
-        'limits':'UI/event objects are test doubles. Core database.lua and selected map methods are actual pinned upstream code. No live game client, renderer, combat-taint or server session was tested.'}
+        'limits':'UI/event objects are test doubles. Full base and extension Lua modules load through actual TOC/XML order, with bounded API/UI test doubles and simulated events. No live game client, renderer, combat-taint or server session was tested.'}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('ALL_CHECKS_PASSED','archive_sha256='+digests[0],'report='+str(args.output),flush=True)

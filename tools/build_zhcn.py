@@ -416,7 +416,7 @@ def main() -> None:
              'quest_review_flags':quest_flags, 'name_coverage':counts,
              'reviewed_quest_fields':sum(len(v) for v in reviewed['quests'].values()),
              'reviewed_name_entries':{k:len(v) for k,v in reviewed['names'].items()},
-             'localization_version':'zhCN-beta.3',
+             'localization_version':'zhCN-rc.1',
              'exact_proper_name_substitutions':glossary_changes,
              'source_caveats':[{'quest_id':28705,'issue':'English objective places Ratchet in Silverpine Forest; CN keeps Ratchet, omits contradictory region. Original data untouched.'},{'quest_id':27967,'issue':'Original $Emissary prefix is not a valid player placeholder; Chinese translates the emissary text, original English remains untouched.'}],
              'note':'ID equality is not proof of semantic correctness. English server index is retained. No live game runtime test.'}

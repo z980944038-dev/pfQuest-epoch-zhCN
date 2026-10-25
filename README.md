@@ -2,11 +2,17 @@
 
 这是 **[Bennylavaa/pfQuest-epoch](https://github.com/Bennylavaa/pfQuest-epoch)** 的非官方 GitHub Fork，由 [EpochCN](https://github.com/z980944038-dev/EpochCN) 维护者进行中文化与兼容维护。保留原作者署名、LICENSE、英文匹配数据、任务 ID 和坐标。
 
-**当前版本：3.3.0 / zhCN-beta.3**。固定基础依赖：pfQuest-wotlk 7.0.1；目标客户端：WoW 3.3.5a / Project Epoch。
+**当前版本：3.3.0 / zhCN-rc.1**。固定基础依赖：pfQuest-wotlk 7.0.1；目标客户端：WoW 3.3.5a / Project Epoch。
+
+## 收尾状态
+
+本版在第三版汉化数据基础上，修复欢迎窗口、原生按钮重绘、同名任务链接、隐藏提示框和少量物品术语，补充上游更新防误覆盖提示。现已冻结功能范围；不会为了版本号继续改写。**RC1仍是候选预发布，不声称真实游戏客户端已经验收。**
+
+完整收尾范围见 [QA_REPORT.md](QA_REPORT.md)，运行记录见 [qa/RC1_RESULT.json](qa/RC1_RESULT.json)。原来的Beta3数据及英文残留报告作为历史证据保留。
 
 ## 安装与升级
 
-分别下载原作者的 [pfQuest-enUS-wotlk 7.0.1](https://github.com/shagu/pfQuest/releases/download/7.0.1/pfQuest-enUS-wotlk.zip) 和本仓库 [Beta 3 安装包](https://github.com/z980944038-dev/pfQuest-epoch-zhCN/releases/tag/v3.3.0-zhCN-beta.3)。解压后目录为：
+分别下载原作者的 [pfQuest-enUS-wotlk 7.0.1](https://github.com/shagu/pfQuest/releases/download/7.0.1/pfQuest-enUS-wotlk.zip) 和本仓库 [RC1 安装包](https://github.com/z980944038-dev/pfQuest-epoch-zhCN/releases/tag/v3.3.0-zhCN-rc.1)。解压后目录为：
 
 ```text
 Interface/AddOns/pfQuest-wotlk/pfQuest-wotlk.toc
@@ -17,7 +23,7 @@ Interface/AddOns/pfQuest-epoch/pfQuest-epoch.toc
 
 `/pfqzh` 查看状态；`/pfqzh on` 开启、`/pfqzh off` 关闭，切换后 `/reload`。关闭时恢复原来的任务语言选择。本包不分发、不替换客户端字体或 MPQ，客户端必须已有中文字库。
 
-## Beta 3 的实质更新
+## 继承的汉化范围与本版修订
 
 | 范围 | 当前中文数据覆盖 |
 |---|---:|
@@ -29,7 +35,7 @@ Interface/AddOns/pfQuest-epoch/pfQuest-epoch.toc
 
 这些统计只针对 pfQuest-epoch 3.3.0 扩展数据库，不冒充全部游戏客户端或所有基础任务的汉化统计。保留英文原始数据库用于服务端匹配；静态客户端、字体与 MPQ 仍属于 EpochCN 的另一层工作。
 
-本轮相对 Beta 2 更新 **555 个任务字段、700 个物品译名、33 个单位译名、6 个物体译名与708个区域译名**；区域中698条为新增译名。不是简单将已有中文当作正确：检查发现并纠正了 **690 条旧库 ID 错配**，普通鱼类、运输箱、物资袋和装备被误译为“副本钥石”的情况已消除，并新增防回归规则。
+第三版相对第二版已更新 **555 个任务字段、700 个物品译名、33 个单位译名、6 个物体译名与708个区域译名**；区域中698条为新增译名。RC1保留这些成果，另外修订4条物品名称，主要工作转为整体加载与显示可靠性。不是简单将已有中文当作正确：检查发现并纠正了 **690 条旧库 ID 错配**，普通鱼类、运输箱、物资袋和装备被误译为“副本钥石”的情况已消除，并新增防回归规则。
 
 区域采用与原英文名称精确匹配的 LibBabble 词条和逐项校订。优先使用支持3.3.5的r23词库；后续词库仅补核对过的同名中文，不引入新版区域ID、地图或坐标。专名、型号、指令和原文校订均保留来源及摘要。
 
@@ -55,7 +61,7 @@ python3 tools/run_checks.py --bootstrap
 
 需要 Python 3.12+、C 编译器和 make。命令只在仓库内下载并构建 SHA256 固定的原生 Lua 5.1.5 和基础插件，不需要 API Key、游戏账号或全局安装。每次 push／PR 由 GitHub Actions 独立运行同样检查。
 
-包括39个Lua文件语法、49份基础源文件固定、任务数量与控制符、英文数据完整性、残留分类、八种运行场景和七种主动故障注入。安装包独立构建两次，校验哈希与包内清单。结果和边界见 [QA_REPORT.md](QA_REPORT.md) 与 `qa/BETA3_RESULT.json`。
+包括40个Lua文件语法、49份基础源文件固定、18549条产物文本二次翻译不变性、任务数量与控制符、英文数据完整性、残留分类、8种精细场景、6种按实际TOC/XML加载的整套场景及12种主动故障注入。安装包独立构建两次，校验哈希与包内清单。结果和边界见 [QA_REPORT.md](QA_REPORT.md) 与 `qa/RC1_RESULT.json`。
 
 ```sh
 python3 tools/audit_english.py
@@ -63,7 +69,7 @@ python3 tools/build_zhcn.py --help
 python3 tools/package_release.py
 ```
 
-这是预发布 **Beta**。原生Lua测试中的UI和事件对象是测试替身，不等于真实游戏渲染、全部插件组合或战斗保护机制已经验收。
+这是预发布 **RC1 收尾候选版**。原生Lua测试中的UI和事件对象是测试替身，不等于真实游戏渲染、全部插件组合或战斗保护机制已经验收。
 
 ## 许可与来源
 

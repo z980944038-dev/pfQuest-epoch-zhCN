@@ -1,5 +1,5 @@
 -- 仅在本插件的 ADDON_LOADED 之后读取存档；英文数据库和服务端 API 不做替换。
-pfQuestEpochZhCN = { enabled = false, ready = false, version = "zhCN-beta.3" }
+pfQuestEpochZhCN = { enabled = false, ready = false, version = "zhCN-rc.1" }
 local zh = pfQuestEpochZhCN
 local kinds = { "quests", "items", "units", "objects", "zones", "professions" }
 local direct, byPrefix, ownedQuestText, formatRules
@@ -146,7 +146,22 @@ function zh.Text(text)
       local label=string.sub(text,open+2,close-1)
       local linkKind=string.match(header,"^|H([^:]+):")
       out[#out+1]=header
-      out[#out+1]=(linkKind=="item" or linkKind=="quest") and plainText(label) or label
+      if linkKind=="item" or linkKind=="quest" then
+        -- 链接自身带稳定 ID；同名任务不能依靠词语替换猜译名。
+        -- 随机附魔后缀及自定义标签不强制覆盖，保留原显示信息。
+        local id=tonumber(string.match(header,"^|H[^:]+:(%d+)"))
+        local kind=linkKind=="item" and "items" or "quests"
+        local db=pfDB[kind]
+        local original=db and db.enUS and db.enUS[id]
+        if type(original)=="table" then original=original.T end
+        local name=zh.Name(kind,id,nil)
+        local inner=string.match(label,"^%[(.*)%]$")
+        local visible=inner or label
+        if name and visible==original then visible=name else visible=plainText(visible) end
+        out[#out+1]=inner and ("["..visible.."]") or visible
+      else
+        out[#out+1]=label
+      end
       out[#out+1]="|h"; pos=close+2
     elseif code == "|T" then
       local close=string.find(text,"|t",pipe+2,true)

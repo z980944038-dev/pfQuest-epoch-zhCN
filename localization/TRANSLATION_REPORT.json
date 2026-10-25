@@ -35,9 +35,9 @@
     "units": 118,
     "objects": 36,
     "zones": 775,
-    "items": 1105
+    "items": 1109
   },
-  "localization_version": "zhCN-beta.3",
+  "localization_version": "zhCN-rc.1",
   "exact_proper_name_substitutions": 433,
   "source_caveats": [
     {

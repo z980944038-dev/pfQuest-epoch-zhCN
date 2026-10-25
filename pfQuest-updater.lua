@@ -19,6 +19,18 @@ function formatVersion(versionNum)
   return major .. "." .. minor .. "." .. fix
 end
 
+-- 上游版本号只表示英文数据库更新，不代表中文维护版已验证兼容。
+-- 保留原作者入口，同时防止玩家误用英文包直接覆盖中文版本。
+local function ShowUpstreamUpdate(currentVer, availableVer)
+    print(LocalText("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!"))
+    print(LocalText("Current: |cff66ccff") .. currentVer .. LocalText("|r -> Available: |cff66ccff") .. availableVer .. "|r")
+    print("|cff66ccffhttps://github.com/Bennylavaa/pfQuest-epoch/releases|r")
+    if pfQuestEpochZhCN and pfQuestEpochZhCN.enabled then
+        print("|cffffff00这是上游原版更新，请勿直接覆盖中文维护版；汉化更新请查看下面的维护仓库。|r")
+        print("|cff66ccffhttps://github.com/z980944038-dev/pfQuest-epoch-zhCN/releases|r")
+    end
+end
+
 local major, minor, fix = hcstrsplit(".", tostring(GetAddOnMetadata("pfQuest-epoch", "Version")))
 fix = fix or 0
 local alreadyshown = false
@@ -140,9 +152,7 @@ gpiupdater:SetScript("OnEvent", function(_, event, ...)
                     if not alreadyshown then
                         local currentVer = formatVersion(localversion)
                         local availableVer = formatVersion(remoteversion)
-                        print(LocalText("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!"))
-                        print(LocalText("Current: |cff66ccff") .. currentVer .. LocalText("|r -> Available: |cff66ccff") .. availableVer .. "|r")
-                        print("|cff66ccffhttps://github.com/Bennylavaa/pfQuest-epoch/releases|r")
+                        ShowUpstreamUpdate(currentVer, availableVer)
                         alreadyshown = true
                     end
                 end
@@ -188,9 +198,7 @@ gpiupdater:SetScript("OnEvent", function(_, event, ...)
         if not alreadyshown and localversion < remoteversion then
             local currentVer = formatVersion(localversion)
             local availableVer = formatVersion(remoteversion)
-            print(LocalText("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!"))
-            print(LocalText("Current: |cff66ccff") .. currentVer .. LocalText("|r -> Available: |cff66ccff") .. availableVer .. "|r")
-            print("|cff66ccffhttps://github.com/Bennylavaa/pfQuest-epoch/releases|r")
+            ShowUpstreamUpdate(currentVer, availableVer)
             gpiupdateavailable = localversion
             alreadyshown = true
         end

@@ -4,7 +4,7 @@
 ## Contributors: Exuria, Shagu, snifflewow, skmd0, trav346, emailnumero123-art, Defcons, Kindrack
 ## Notes: 纪元服任务、物品、NPC及区域简体中文扩展（保留英文任务匹配）
 ## Version: 3.3.0
-## X-Localization-Version: zhCN-beta.3
+## X-Localization-Version: zhCN-rc.1
 ## Dependencies: pfQuest-wotlk
 ## OptionalDeps: EpochCN
 ## SavedVariables: pfQuest_epochcount, pfQuest_CompletedQuestData, pfQuest_epoch_zhCNEnabled, pfQuest_epoch_zhCNInitialized

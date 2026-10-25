@@ -343,6 +343,29 @@ local partyText='|cffaaaaaa- |r|cFF00FF00Gortak|r: Kobold Miner (2/8)'
 local partyCN=zh.Text(partyText)
 check(partyCN:find('|cFF00FF00Gortak|r:',1,true),'translated a party member name that matches an NPC')
 check(partyCN:find('狗头人矿工',1,true),'failed to translate party objective after protecting player name')
+-- Final-review regressions: stable link ID, stale tooltip ownership and all output text.
+check(zh.Text('|Hquest:900001:1|h[Ambiguous Test]|h')=='|Hquest:900001:1|h[测试甲]|h','quest hyperlink did not use its stable ID')
+check(zh.Text('|Hquest:900002:1|h[Ambiguous Test]|h')=='|Hquest:900002:1|h[测试乙]|h','same-title quest link used another ID')
+check(zh.Text('|Hquest:999998:1|h[Ambiguous Test]|h')=='|Hquest:999998:1|h[Ambiguous Test]|h','unknown-ID ambiguous link was partially translated')
+GameTooltip:ClearLines();GameTooltip:AddLine('Kobold Miner');GameTooltip:Hide()
+local mapNode=CreateFrame('Button',nil,WorldMapButton)
+mapNode.spawn='Kobold Miner';mapNode.node={};mapNode.level=10;mapNode.spawntype='Unit';mapNode.respawn=1
+this=mapNode;pfMap.NodeEnter();this=nil
+check(GameTooltip.visible==false,'world-map hover revived an unrelated hidden tooltip')
+local textCount=0
+for _,kind in ipairs({'quests','items','units','objects','zones'}) do
+ for id,value in pairs(pfDB[kind]['zhCN-epoch']) do
+  if not (kind=='quests' and (id==900001 or id==900002)) then
+   for _,text in ipairs(type(value)=='table' and {value.T,value.O,value.D} or {value}) do
+    assert(zh.Text(text)==text,'second translation changed vetted Chinese '..kind..':'..id)
+    textCount=textCount+1
+   end
+  end
+ end
+end
+check(textCount>=18000,'all-output idempotence sweep did not run')
+print('ALL_OUTPUT_TEXT_INVARIANT',textCount)
+
 local sample='|cffffffff|Hitem:782:0:0:0|h[Painted Gnoll Armband]|h|r: 5/8 - Kobold Miner'
 local started=os.clock()
 for i=1,5000 do

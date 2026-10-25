@@ -4,7 +4,8 @@ local zh=pfQuestEpochZhCN
 local bound=setmetatable({}, {__mode="k"})
 local busy=setmetatable({}, {__mode="k"})
 local hoverBound=setmetatable({}, {__mode="k"})
-local roots={"pfQuestConfig","pfQuestBrowser","pfQuestJournal","pfQuestMenu","pfQuestMapTracker","pfQuestEpochLootPanel"}
+local buttonBound=setmetatable({}, {__mode="k"})
+local roots={"pfQuestConfig","pfQuestBrowser","pfQuestJournal","pfQuestMenu","pfQuestMapTracker","pfQuestEpochLootPanel","pfQuestInit"}
 
 local function textForQuest(text,id)
   local record=zh.Quest(id)
@@ -29,6 +30,7 @@ function zh.LocalizeTooltip(tooltip,id)
   if not zh.enabled or not tooltip or not tooltip.GetName or not tooltip.NumLines then return end
   local name=tooltip:GetName()
   if not name then return end
+  local wasShown=not tooltip.IsShown or tooltip:IsShown()
   local changed=false
   for i=1,tooltip:NumLines() do
     for _,side in ipairs({"Left","Right"}) do
@@ -40,7 +42,7 @@ function zh.LocalizeTooltip(tooltip,id)
       end
     end
   end
-  if changed and tooltip.Show then tooltip:Show() end
+  if changed and wasShown and tooltip.Show then tooltip:Show() end
 end
 
 local function localizeFont(font)
@@ -73,7 +75,20 @@ local function bindTree(frame,depth)
   if objectType=="FontString" then bindFont(frame); return end
   if (objectType=="Button" or objectType=="CheckButton") and frame.HookScript and not hoverBound[frame] then
     hoverBound[frame]=true
-    frame:HookScript("OnEnter",function(self) zh.LocalizeTooltip(GameTooltip,self.questid) end)
+    frame:HookScript("OnEnter",function(self)
+      -- 没有生成本按钮提示时，不处理上次悬停留下的其他窗口内容。
+      if GameTooltip.GetOwner and GameTooltip:GetOwner()~=self then return end
+      zh.LocalizeTooltip(GameTooltip,self.questid)
+    end)
+  end
+  -- 原生 Button:SetText 可绕过 FontString 的 Lua hook；直接跟踪按钮的重绘。
+  -- 不作用于 EditBox，避免改写搜索词及用户输入。
+  if (objectType=="Button" or objectType=="CheckButton") and frame.GetFontString and not buttonBound[frame] then
+    buttonBound[frame]=true
+    local function refresh(button) bindFont(button:GetFontString()) end
+    if type(frame.SetText)=="function" then hooksecurefunc(frame,"SetText",refresh) end
+    if type(frame.SetFormattedText)=="function" then hooksecurefunc(frame,"SetFormattedText",refresh) end
+    refresh(frame)
   end
   if frame.GetRegions then for _,region in ipairs({frame:GetRegions()}) do bindFont(region) end end
   if frame.GetChildren then for _,child in ipairs({frame:GetChildren()}) do bindTree(child,depth+1) end end
@@ -101,7 +116,11 @@ function zh.InstallDisplayHooks()
   hook(pfDatabase,"ShowExtendedTooltip",function(self,id,tip) zh.LocalizeTooltip(tip or GameTooltip,id) end)
   hook(pfMap,"ShowTooltip",function(self,meta,tip) zh.LocalizeTooltip(tip or GameTooltip,meta and meta.questid) end)
   hook(pfMap,"NodeEnter",function()
-    zh.LocalizeTooltip(GameTooltip); zh.LocalizeTooltip(WorldMapTooltip)
+    -- 与原版 NodeEnter 选择同一个窗口，不能唤醒另一个已隐藏的 Tooltip。
+    local node=this
+    if not node or not node.GetParent then return end
+    local target=node:GetParent()==WorldMapButton and WorldMapTooltip or GameTooltip
+    zh.LocalizeTooltip(target,node.questid)
   end)
   local tracker=_G.pfQuestMapTracker
   hook(tracker,"ButtonEvent",function(button)
