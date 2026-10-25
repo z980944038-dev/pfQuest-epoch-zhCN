@@ -128,7 +128,10 @@ QUEST_MONSTERS_KILLED='%s slain: %d/%d'
 pfUI={api={SanitizePattern=function(pattern) return pattern==QUEST_MONSTERS_KILLED and '(.*) slain: (%d+)/(%d+)' or '(.*): (%d+)/(%d+)' end}}
 pfQuestCompat={client=30300,GetQuestLogTitle=GetQuestLogTitle,
   GetDifficultyColor=function() return {r=1,g=1,b=0} end}
-pfQuest={questlog={}};pfQuest_history={};pfQuest_server={}
+pfQuest={questlog={},route={}};pfQuest_history={};pfQuest_server={}
+pfQuest.route.arrow=CreateFrame('Frame','pfQuestTestArrow',UIParent)
+pfQuest.route.arrow.title=pfQuest.route.arrow:CreateFontString();pfQuest.route.arrow.title:SetText('Corpse')
+pfQuest.route.arrow.description=pfQuest.route.arrow:CreateFontString();pfQuest.route.arrow.description:SetText('Welcome to the Spirit World')
 pfQuest_config={showids='0',tooltiphelp='0'};pfQuest_questcache={}
 pfQuest_Loc=setmetatable({}, {__index=function(t,k) rawset(t,k,k);return k end})
 local protected={GetLocale=GetLocale,GetQuestLogTitle=GetQuestLogTitle,GetQuestLogLeaderBoard=GetQuestLogLeaderBoard,
@@ -296,6 +299,23 @@ check(zh.Format('$G先生:女士;')==(scenario=='female' and '女士' or '先生
 check(zh.Format('甲$B乙')=='甲\n乙','newline token failed')
 check(pfDatabase:FormatQuestText('$N the $C')=='测试者 the mage','changed English matching formatter')
 check(pfQuestConfig.caption:GetText()=='设置','failed to localize UI created before extension loaded')
+check(pfQuest.route.arrow.title:GetText()=='尸体','navigation arrow heading not localized')
+check(pfQuest.route.arrow.description:GetText()=='欢迎来到灵魂世界','navigation status not localized')
+pfQuest.route.arrow.description:SetText('Error 404: HP Not Found')
+check(pfQuest.route.arrow.description:GetText()=='错误404：未找到生命值','reused navigation status reverted to English')
+check(zh.Text('No items linked to this NPC')=='该角色没有关联的物品记录','loot panel fallback not localized')
+check(zh.Text('Drop chance: 25%')=='掉落几率：25%','drop rate text changed value or remains English')
+check(zh.Text('Loot |cff33ffcc[Painted Gnoll Armband]|r from |cff33ffccKobold Miner|r')=='拾取|cff33ffcc[彩色豺狼人臂章]|r，来源：|cff33ffcc狗头人矿工|r','display format left English or swapped item/NPC parameters')
+check(zh.Text('Use |cff33ffccPainted Gnoll Armband|r on |cff33ffccKobold Miner|r')=='使用|cff33ffcc彩色豺狼人臂章|r，目标：|cff33ffcc狗头人矿工|r','use-on format swapped tool and target')
+check(zh.Text('Current: |cff66ccff3.3.0|r -> Available: |cff66ccff3.4.0|r'):find('3.4.0',1,true),'version notice changed numeric version')
+
+check(zh.Name('items',60141,nil)=='烟林牧场运输箱','cross-project keystone item contamination returned')
+check(zh.Text('Smokywood Pastures Shipping Crate')=='烟林牧场运输箱','item tooltip still uses contaminated translation')
+check(zh.Name('zones',4273,nil)=='奥杜尔','new zone translation not loaded')
+check(zh.Text('/bow')=='/bow','translated an executable emote command')
+local demon=pfDB.quests['zhCN-epoch'][31033].D
+check(zh.Text(demon)==demon,'retranslated an explicitly preserved inscription')
+
 pfQuestConfig:CreateConfigEntries()
 check(pfQuestConfig.lateCaption:GetText()=='设置窗口缩放','failed to localize deferred config rebuild')
 pfQuestConfig.lateCaption:SetText('Settings')

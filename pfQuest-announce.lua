@@ -1,3 +1,9 @@
+-- 只翻译本模块自身的本地提示；不 Hook 全局聊天、不修改广播协议。
+local function LocalText(text)
+  local locale=pfQuestEpochZhCN
+  return locale and locale.Text and locale.Text(text) or text
+end
+
 -- Use server-original quest text for matching; localized UI globals remain intact.
 local GetQuestLogTitle = pfQuestEpochServerAPI.GetQuestLogTitle
 local GetQuestLogLeaderBoard = pfQuestEpochServerAPI.GetQuestLogLeaderBoard
@@ -304,14 +310,14 @@ configExtenderFrame:SetScript("OnEvent", function(self, event, addonName)
         if ExtendPfQuestConfig() then
           local versionUpdated = CheckAndHandleVersionUpdate()
           if versionUpdated then
-            DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Updated - Finished quest announcements have been disabled. Re-enable manually if desired.")
+            DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Updated - Finished quest announcements have been disabled. Re-enable manually if desired."))
           end
           self:SetScript("OnUpdate", nil)
           self:UnregisterAllEvents()
         elseif timer > 300 then
           self:SetScript("OnUpdate", nil)
           self:UnregisterAllEvents()
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Config integration failed")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Config integration failed"))
         end
       end
     end)
@@ -344,31 +350,31 @@ local function SetupAnnounceCommands()
       if arg2 == "finished" then
         if arg3 == "on" then
           pfQuest_config["epochannounceFinished"] = "1"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Finished quest announcements enabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Finished quest announcements enabled"))
           return
         elseif arg3 == "off" then
           pfQuest_config["epochannounceFinished"] = "0"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Finished quest announcements disabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Finished quest announcements disabled"))
           return
         end
       elseif arg2 == "remaining" then
         if arg3 == "on" then
           pfQuest_config["epochannounceRemaining"] = "1"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Remaining quest announcements enabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Remaining quest announcements enabled"))
           return
         elseif arg3 == "off" then
           pfQuest_config["epochannounceRemaining"] = "0"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Remaining quest announcements disabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Remaining quest announcements disabled"))
           return
         end
       elseif arg2 == "item" then
         if arg3 == "on" then
           pfQuest_config["epochannounceShowItem"] = "1"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Item links in announcements enabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Item links in announcements enabled"))
           return
         elseif arg3 == "off" then
           pfQuest_config["epochannounceShowItem"] = "0"
-          DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Item links in announcements disabled")
+          DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Item links in announcements disabled"))
           return
         end
       end

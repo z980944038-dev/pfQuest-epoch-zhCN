@@ -25,24 +25,28 @@
       "untranslated": 10
     },
     "zones": {
-      "translated": 1665,
+      "translated": 2363,
       "total": 2363,
-      "untranslated": 698
+      "untranslated": 0
     }
   },
-  "reviewed_quest_fields": 102,
+  "reviewed_quest_fields": 655,
   "reviewed_name_entries": {
-    "units": 87,
-    "objects": 30,
-    "zones": 67,
-    "items": 405
+    "units": 118,
+    "objects": 36,
+    "zones": 775,
+    "items": 1105
   },
-  "localization_version": "zhCN-beta.2",
-  "exact_proper_name_substitutions": 608,
+  "localization_version": "zhCN-beta.3",
+  "exact_proper_name_substitutions": 433,
   "source_caveats": [
     {
       "quest_id": 28705,
       "issue": "English objective places Ratchet in Silverpine Forest; CN keeps Ratchet, omits contradictory region. Original data untouched."
+    },
+    {
+      "quest_id": 27967,
+      "issue": "Original $Emissary prefix is not a valid player placeholder; Chinese translates the emissary text, original English remains untouched."
     }
   ],
   "note": "ID equality is not proof of semantic correctness. English server index is retained. No live game runtime test."

@@ -1,0 +1,406 @@
+{
+  "schema": 1,
+  "quests": {
+    "26338:O": {
+      "literals": [
+        "SI:7"
+      ],
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "source_sha256": "fdf2aef316652535b2e5bab6740b8cb4f681e068ede2d96d557c5a46f64695a3"
+    },
+    "26338:D": {
+      "literals": [
+        "SI:7"
+      ],
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "source_sha256": "5f5ded8409d8101801a8f2f6bbcbf0b729f23ae014cd8d25195b60f04a50106a"
+    },
+    "27947:O": {
+      "literals": [
+        "SI:7"
+      ],
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "source_sha256": "e9544fac639b734d02f0b42e9b12b4e20ec3bdef0af02a1e3109f1d381ac91ad"
+    },
+    "28373:O": {
+      "literals": [
+        "SI:7"
+      ],
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "source_sha256": "9757d87b82e09c449b479dcd30d62740c59565280c98265c41d232b4e2e03cf1"
+    },
+    "27082:O": {
+      "literals": [
+        "/bow"
+      ],
+      "reason": "必须实际输入的鞠躬表情命令，不能翻译命令本身",
+      "source_sha256": "56a605a9e34752434d4f6490bf3f9d98b6517b7a3eb6e9d5669cc8e0f5609bf8"
+    },
+    "31033:D": {
+      "literals": [
+        "Rikk alar il xi zennrakkan lok Kirasath Raka ruk asj xi veni parn kar lok revola rukadare il Karazhan. Lok kamil buras naztheros arakalada xi daz veni. Rikk lok parn il asj xi Z gular maladath lok buras kanrethad il lok kamil. Kiel ashjrethul ante buras gul revos. \nIl kirasath Vorakem Zekulrakkas Archim il Aman Veni Kazzak."
+      ],
+      "reason": "剧情明确要求破译的恶魔语铭文，逐字保留原文，不臆造译义",
+      "source_sha256": "e01b3b8839787c237a7f7c7a42ff1ec289d410eebe26980e8bf2d53e9764d612"
+    },
+    "26893:D": {
+      "source_sha256": "13279f73c50d9c15b23ef8c4cf9aa6c8118ef212e67736250fbde650da9105a9",
+      "literals": [
+        "W.P."
+      ],
+      "reason": "剧情中的署名缩写，不能推测未揭示的全名"
+    },
+    "26931:D": {
+      "source_sha256": "787cf64113296daa433ed2035d08bdfe0470e0426598bb1fbbe5740ea4b2fd5e",
+      "literals": [
+        "K"
+      ],
+      "reason": "角色以单字母代号称呼，保留该代号"
+    },
+    "27127:O": {
+      "source_sha256": "40cbcacf67292b2465e4c5f5507ebc23001bf19f4bfbe7dadf8d9a6059eca0bb",
+      "literals": [
+        "M."
+      ],
+      "reason": "人物姓名首字母，保留可识别性"
+    },
+    "27127:D": {
+      "source_sha256": "2171fb735d3336025538b3bb3fb077c40275440ad32040679bdc21c869b97b76",
+      "literals": [
+        "M."
+      ],
+      "reason": "人物姓名首字母，保留可识别性"
+    },
+    "27128:D": {
+      "source_sha256": "bfb4d5dce7c60e23d889d4e8e3338560b068df74321fca899970d86fbfa6789e",
+      "literals": [
+        "M."
+      ],
+      "reason": "人物姓名首字母，保留可识别性"
+    },
+    "27289:D": {
+      "source_sha256": "d312ae741ec518d7e83d408ec4e498186b6619870ab98b8b63fff6f249250621",
+      "literals": [
+        "R.D."
+      ],
+      "reason": "信件署名缩写，属于剧情线索"
+    },
+    "27290:D": {
+      "source_sha256": "d312ae741ec518d7e83d408ec4e498186b6619870ab98b8b63fff6f249250621",
+      "literals": [
+        "R.D."
+      ],
+      "reason": "信件署名缩写，属于剧情线索"
+    },
+    "27450:T": {
+      "source_sha256": "722fa49a52bca777e79362fa34aa9667766418d32799b3fbefb36a6fe4628c6b",
+      "literals": [
+        "A.S.S."
+      ],
+      "reason": "组织原文缩写，原段落没有提供可核对的全称"
+    },
+    "27450:O": {
+      "source_sha256": "54a1800646bf6b104103bfed145a03fd9f34f729fba91f0cf39e91d1e4c6194c",
+      "literals": [
+        "A.S.S."
+      ],
+      "reason": "组织原文缩写，原段落没有提供可核对的全称"
+    },
+    "27509:O": {
+      "source_sha256": "9f28dc484aee600e23eaaff669a0110386642866c0cd3bc403366fb09fd05ae3",
+      "literals": [
+        "S.J."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27510:O": {
+      "source_sha256": "5fdf8a9bcdec98534e23c631dc2746f1f0e5820df3d37e8389ca3e9ac92c56db",
+      "literals": [
+        "S.J."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27511:O": {
+      "source_sha256": "6c3469d14ab65435dacc68d9dbaeedee81193987dd6fafe6440c3f33d68d21a8",
+      "literals": [
+        "S.J."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27512:O": {
+      "source_sha256": "8264277d53cd91d84aa6e32f0b53c26b77115d86c79290c2238bdde71fea2cfa",
+      "literals": [
+        "S.J."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27532:O": {
+      "source_sha256": "d011cafbd2bb05586799992f82f996fad5079d0f3fd39826bb950cde3976839a",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27532:D": {
+      "source_sha256": "e23a9ecea506cb1ade2bf06ffdb9589a312d1b05519330068471748e245a79ef",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27534:O": {
+      "source_sha256": "d9102b03ac3cc4f456fe605d0d660035901facd9da19d6b3df7b4b893ecb4dc4",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27537:O": {
+      "source_sha256": "8cd7e27eeaf7bccc3af552a0a468f05f635c4f0c40db49404ee8faa3217a7bb6",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27538:O": {
+      "source_sha256": "8014384d03f67964852dfd2d96325c35e6d62619d9227c9caf867ae05e3bb1bd",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27539:O": {
+      "source_sha256": "6277ee8d67bbb7a3f0c7bde4d3029c421e23ace2b867527175dd6e2994a95ff6",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27561:O": {
+      "source_sha256": "059e76d2d6fbfaeb4f4b43f0f9495668acee2ec05ddfd731a7f1cc87f9999f05",
+      "literals": [
+        "B.T.L.R."
+      ],
+      "reason": "装置型号缩写，中文说明已补充"
+    },
+    "27970:D": {
+      "source_sha256": "02665ba9e6715af075553989e9dff5c5b60e3b5e417a67cb239bfe431bdcdc91",
+      "literals": [
+        "F.A.I.L.S.A.F.E."
+      ],
+      "reason": "原文已解释全称的装置缩写"
+    },
+    "27972:O": {
+      "source_sha256": "b51a573792e4e223d7c2c53a01d658a671ea162a15f86f603714e6f2e5cf2092",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27973:O": {
+      "source_sha256": "75577c719c17ae7c397ed68544ef10f1531cea7dc4f21a4d827d2cde1f45e4f2",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27974:O": {
+      "source_sha256": "0ecd13005b1df1ee7b700b474a725ebab8a7833ffcd99131c6f555a9a3a37736",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "27975:D": {
+      "source_sha256": "ceb34919a5ab0672be9fbcc5c7604c7519b8c86720e4c4fd72ae031d89929a9f",
+      "literals": [
+        "J.D."
+      ],
+      "reason": "人物姓名首字母"
+    },
+    "28390:O": {
+      "source_sha256": "b83f926a59fbf4753344a311aa0633e6c467fe48529927970b778ff77ceb6802",
+      "literals": [
+        "2H"
+      ],
+      "reason": "双手武器的技术标记，已加中文解释并保留原标签"
+    },
+    "28415:O": {
+      "source_sha256": "20e7bcca9c29d608531c09f87ebaf46a15d2a767a1ab07a34db7128403901404",
+      "literals": [
+        "2H"
+      ],
+      "reason": "双手武器的技术标记，已加中文解释并保留原标签"
+    },
+    "28725:D": {
+      "source_sha256": "f860f7ddcef67b3b3f756e24aefe10fb80f6e212eb7666d49710b02a65c9d97d",
+      "literals": [
+        "G.E.A.R."
+      ],
+      "reason": "侏儒紧急集结通道原名缩写；仅在介绍处说明"
+    }
+  },
+  "names": {
+    "items": {
+      "64932": {
+        "literals": [
+          "A"
+        ],
+        "display": "翡翠机械陆行鸟A型",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e38bcf05976e35d5a538158b29711fc70f43307368fdb357df263881ad2c4f21"
+      }
+    },
+    "units": {
+      "45294": {
+        "literals": [
+          "G"
+        ],
+        "display": "米奇 G",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "5dc42f71e17133f84a938b9e8c4d7318e9edc3cd783a85dbef3c15a125ffd83b"
+      },
+      "46032": {
+        "literals": [
+          "M"
+        ],
+        "display": "M. 斯宾塞·科珀宾奇",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "8b3943a83a8a0e0cb54cc04ba0f05ed9e0440c440a629cd6fcf758a65720d607"
+      },
+      "46278": {
+        "literals": [
+          "S",
+          "J"
+        ],
+        "display": "S.J.小埃尔加丁",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "c7517af10579453d1f6dc00e7c68b2d1c785df206422e137422fb5fa85d89699"
+      },
+      "46716": {
+        "literals": [
+          "A"
+        ],
+        "display": "翡翠机械陆行鸟A型",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e38bcf05976e35d5a538158b29711fc70f43307368fdb357df263881ad2c4f21"
+      },
+      "46768": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 虚拟冰霜陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "81a459522e423b1a0e4dfb9a9e0edfd9a7cefd4e89179204f9c9043b940b5e38"
+      },
+      "46769": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人眩晕陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "53651762161a794504dc8252ee4ee49262f69d4b98197dde9ea6aa262913bf49"
+      },
+      "46770": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人网陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "3a72591806d3ab5cd1c39e7c1e56df3847e3262b9dc943da1947e5d6778422cf"
+      },
+      "46771": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人传送陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e02e850ffaae6d1a87365e1b400593211be8eab6748463a4176790504811c121"
+      },
+      "46772": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人传送陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e02e850ffaae6d1a87365e1b400593211be8eab6748463a4176790504811c121"
+      },
+      "46773": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人传送陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e02e850ffaae6d1a87365e1b400593211be8eab6748463a4176790504811c121"
+      },
+      "46774": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人传送陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e02e850ffaae6d1a87365e1b400593211be8eab6748463a4176790504811c121"
+      },
+      "46775": {
+        "literals": [
+          "SOS"
+        ],
+        "display": "SOS 假人传送陷阱",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "e02e850ffaae6d1a87365e1b400593211be8eab6748463a4176790504811c121"
+      }
+    },
+    "zones": {
+      "4418": {
+        "literals": [
+          "K3"
+        ],
+        "display": "K3营地",
+        "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+        "source_sha256": "54c41e0402abdddf802c5423f301d6e4231e205de082057831912ae6450d95be"
+      }
+    }
+  },
+  "untranslated_objects": {
+    "250088": {
+      "english": "Doodad_BOSSGATE02",
+      "reason": "内部模型标识，不当作玩家物体名称翻译"
+    },
+    "250389": {
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    "250390": {
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    "250564": {
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    "250630": {
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    "250631": {
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    "250636": {
+      "english": "Ssaggh ez oou Uul'gwa Ryiu",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    "250637": {
+      "english": "Ssaggh ez oou Par'okoth Vwyq",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    "250638": {
+      "english": "Ssagh ez oou Yyg'far Vwah",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    "250639": {
+      "english": "Ssaggh ez oou Lwhuk Ak'agthshi",
+      "reason": "虚构语言铭文，不臆造译义"
+    }
+  }
+}

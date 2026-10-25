@@ -21,7 +21,7 @@ BASE_SHA='b81ef4dd3b19fc8893da525e91d7dd6869a180cc2b9bf0943f769c1ad0bfb34c'
 
 def fetch_pinned(url: str,path: Path,expected: str) -> None:
     if not path.exists():
-        request=urllib.request.Request(url,headers={'User-Agent':'pfQuest-epoch-zhCN-QA/2'})
+        request=urllib.request.Request(url,headers={'User-Agent':'pfQuest-epoch-zhCN-QA/3'})
         with urllib.request.urlopen(request,timeout=45) as response:
             blob=response.read()
         require(hashlib.sha256(blob).hexdigest()==expected,'Downloaded dependency hash mismatch: '+path.name)
@@ -99,6 +99,11 @@ def main() -> None:
             ('toc_filename_case','pfQuest-epoch.toc','pfquest-arrow.lua','pfQuest-arrow.lua','TOC target missing or wrong case'),
             ('missing_saved_state','pfQuest-epoch.toc','## SavedVariablesPerCharacter: pfQuest_epoch_zhCNCharDB','## RemovedSavedVariables: pfQuest_epoch_zhCNCharDB','Missing character-scoped preference'),
         ]
+        cases.extend([
+            ('item_name_contamination','db/zhCN/items-epoch.lua','烟林牧场运输箱','钥石：错误副本','Cross-project item-name contamination'),
+            ('unclassified_english','db/zhCN/quests-epoch.lua','悬赏河爪豺狼人','悬赏河爪豺狼人 EnglishLeak','Unclassified visible English residue'),
+            ('lost_emote_command','db/zhCN/quests-epoch.lua','/bow','/鞠躬','Lost protected quest literal'),
+        ])
         for name,relative,before,after,diagnostic in cases:
             file=clone/relative;original=file.read_text('utf-8')
             require(before in original,'Negative test fixture is stale: '+name)

@@ -7,7 +7,7 @@
   "pfquest_core_release": "7.0.1",
   "pfquest_core_license": "MIT",
   "usage": "Derived translation data only; no complete third-party addon redistributed.",
-  "reviewed_overrides_sha256": "69caaac27b54483a4a48f87b95660199546f42f8f3f6175cb1db4f41600865e5",
+  "reviewed_overrides_sha256": "5e370a6eebaae8eacf3569919b1f5bad42566f1e55e6b806b0ed0f2f3f7ad915",
   "input_sha256": {
     "EpochHeadData.lua": "6358c3b48cf452cd1609a426279512f90f3e8fd65cad6cd34ea1a0b3de5b325c",
     "EpochItemData.lua": "e759a89949ada35f596a6dfbfdd0de89542e84c3f0fc789dde328ec15a5c37e9",
@@ -23,5 +23,23 @@
     "UnitData.lua": "2e94f67f1e203592b958999221e54d9ae9e49288c2c29797b843ead57c957753",
     "UnitNameDict.lua": "1ae8d69bd4b0fd94ea06ed0958701a7061ce695d3d4f9347b7b8dccb17bd02da"
   },
-  "manual_names": "Community localization, not an official translation or proof of live-server correctness."
+  "manual_names": "Community localization, not an official translation or proof of live-server correctness.",
+  "libbabble_extracted_names": {
+    "url": "https://edge.forgecdn.net/files/441/688/LibBabble-SubZone-3.0-r23.zip",
+    "project": "https://www.wowace.com/projects/libbabble-subzone-3-0",
+    "file_page": "https://www.wowace.com/projects/libbabble-subzone-3-0/files/441688",
+    "release": "r23 / 2010-07-27 / WoW 3.3.5",
+    "sha256": "ac6ded342b991ddd7c4660d97026a02c40e9fef15064d73b5d0f4c5a75bfb6f7",
+    "md5": "1c32a7505fcfc0cb5f3d9bbe17792342"
+  },
+  "libbabble_extracted_name_file_sha256": "0f69dab28ad1921e1e05dff10f8507b465210d323b7247c71b11ef1619bb8afb",
+  "beta3_glossary_sha256": "cb87b3e3827dd2f5167e93c777d9afad03b387c5e1cf69ab598d5c4116f1426f",
+  "libbabble_supplement": {
+    "url": "https://edge.forgecdn.net/files/2854/554/LibBabble-SubZone-3.0-8.2-release1.zip",
+    "file_page": "https://www.curseforge.com/wow/addons/libbabble-subzone-3-0/files/2854554",
+    "release": "8.2-release1",
+    "sha256": "123f026c033d933871871283243c80e22a81802e3c2c7820767e097d37243474"
+  },
+  "preserved_text_policy_sha256": "d5ed1a3552cdab6e371c06bea6b43bbde051c03314a3495b5a1508c483a63eee",
+  "locale_merge_policy": "Do not replace an existing Chinese name with an English placeholder from an expansion; check identity separately."
 }

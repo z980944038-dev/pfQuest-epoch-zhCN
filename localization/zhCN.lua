@@ -1,8 +1,8 @@
 -- 仅在本插件的 ADDON_LOADED 之后读取存档；英文数据库和服务端 API 不做替换。
-pfQuestEpochZhCN = { enabled = false, ready = false, version = "zhCN-beta.2" }
+pfQuestEpochZhCN = { enabled = false, ready = false, version = "zhCN-beta.3" }
 local zh = pfQuestEpochZhCN
 local kinds = { "quests", "items", "units", "objects", "zones", "professions" }
-local direct, byPrefix, ownedQuestText
+local direct, byPrefix, ownedQuestText, formatRules
 
 local function chinese(text)
   return type(text) == "string" and string.find(text, "[\128-\255]") ~= nil
@@ -18,9 +18,31 @@ local function addPhrase(index, original, translated)
   end
 end
 
+-- 只识别语言表中已知的完整 %s 句式；不能对任意聊天或协议内容做模式替换。
+local function addFormatRule(original, translated)
+  if type(original)~="string" or type(translated)~="string" then return end
+  local first=string.find(original,"%s",1,true)
+  if not first or first<=3 then return end
+  local _,count=string.gsub(original,"%%s","")
+  local _,translatedCount=string.gsub(translated,"%%s","")
+  if count~=translatedCount or count>4 then return end
+  local function escape(text)
+    return (string.gsub(text,"([%(%)%.%%%+%-%*%?%[%]%^%$])","%%%1"))
+  end
+  local chunks,position={},1
+  while true do
+    local offset=string.find(original,"%s",position,true)
+    if not offset then chunks[#chunks+1]=escape(string.sub(original,position));break end
+    chunks[#chunks+1]=escape(string.sub(original,position,offset-1))
+    chunks[#chunks+1]="(.-)"
+    position=offset+2
+  end
+  formatRules[#formatRules+1]={pattern="^"..table.concat(chunks).."$",text=translated,count=count,length=#original}
+end
+
 local function buildDisplayIndex()
   if direct then return end
-  direct, byPrefix, ownedQuestText = {}, {}, {}
+  direct, byPrefix, ownedQuestText, formatRules = {}, {}, {}, {}
   for _, kind in ipairs(kinds) do
     local db = pfDB and pfDB[kind]
     if db then
@@ -41,6 +63,13 @@ local function buildDisplayIndex()
   end
   for key, value in pairs(pfQuestEpochZhCN_UI or {}) do direct[key] = value end
   for key, value in pairs(pfQuestEpochZhCN_ExtraUI or {}) do direct[key] = value end
+  for key, value in pairs(pfQuestEpochZhCN_UI or {}) do
+    local translated=(pfQuestEpochZhCN_ExtraUI or {})[key] or value
+    addFormatRule(key,translated)
+    -- 基础中文语言表中若存在参数顺序误译，只修正显示，不重写共享语言表。
+    if value~=translated then addFormatRule(value,translated) end
+  end
+  table.sort(formatRules,function(a,b) return a.length>b.length end)
   for text, translated in pairs(direct) do
     -- 完整段落走精确匹配，短语索引只处理名称与短标签。
     if translated and #text >= 3 and #text <= 160 and not string.find(text, "[\n\r|]") then
@@ -59,6 +88,7 @@ local function buildDisplayIndex()
 end
 
 local function plainText(text)
+  if direct[text] == false then return text end
   if direct[text] then return direct[text] end
   local out, pos, mark = {}, 1, 1
   while pos <= #text do
@@ -69,7 +99,8 @@ local function plainText(text)
       for _, phrase in ipairs(bucket) do
         local last = pos + #phrase[1] - 1
         local after = string.sub(text,last+1,last+1)
-        if string.sub(text,pos,last) == phrase[1] and not string.find(after,"[%w_]") then
+        local wordContinues = string.find(string.sub(phrase[1],-1),"[%w_]") and string.find(after,"[%w_]")
+        if string.sub(text,pos,last) == phrase[1] and not wordContinues then
           out[#out+1] = string.sub(text,mark,pos-1)
           out[#out+1] = phrase[2]
           pos, mark, matched = last+1, last+1, true
@@ -87,7 +118,17 @@ end
 function zh.Text(text)
   if not zh.enabled or type(text) ~= "string" or text == "" then return text end
   buildDisplayIndex()
+  if direct[text] == false then return text end
   if direct[text] then return direct[text] end
+  -- 完整中文任务段落已经在构建时校订；不得再次翻译其中明确保留的恶魔语或命令。
+  if ownedQuestText[text] then return text end
+  for _,rule in ipairs(formatRules) do
+    local captures={string.match(text,rule.pattern)}
+    if #captures==rule.count then
+      for i=1,#captures do captures[i]=zh.Text(captures[i]) end
+      return string.format(rule.text,unpack(captures))
+    end
+  end
   -- 队友姓名必须原样显示，即使恰好与 NPC 同名；只翻译它后面的目标文字。
   local partyPrefix, objective=string.match(text,"^(|cffaaaaaa%- |r|c%x%x%x%x%x%x%x%x[^|]+|r: )(.*)$")
   if partyPrefix then return partyPrefix..zh.Text(objective) end

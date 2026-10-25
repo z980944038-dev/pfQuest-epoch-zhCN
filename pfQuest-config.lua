@@ -1,3 +1,9 @@
+-- 只翻译本模块自身的本地提示；不 Hook 全局聊天、不修改广播协议。
+local function LocalText(text)
+  local locale=pfQuestEpochZhCN
+  return locale and locale.Text and locale.Text(text) or text
+end
+
 local ENTRY_HEIGHT = 22
 local NUM_COLUMNS = 3
 local HEADER_INDENT = 10
@@ -293,7 +299,7 @@ configFrame:SetScript("OnEvent", function(self, event)
                 elseif timer > 300 then
                     self:SetScript("OnUpdate", nil)
                     self:UnregisterAllEvents()
-                    DEFAULT_CHAT_FRAME:AddMessage("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Config UI rebuild failed")
+                    DEFAULT_CHAT_FRAME:AddMessage(LocalText("|cff33ffccpf|cffffffffQuest |cffcccccc[Epoch]|r: Config UI rebuild failed"))
                 end
             end
         end)

@@ -7,6 +7,7 @@ import json
 import re
 from pathlib import Path
 from build_zhcn import parse_english_quests, parse_id_strings, HAN
+from audit_english import audit as audit_english
 
 ROOT=Path(__file__).resolve().parent.parent
 
@@ -79,7 +80,14 @@ def verify() -> dict:
             require(path.is_relative_to(ROOT.resolve()),'XML include escapes addon root')
             require(path.relative_to(ROOT.resolve()).as_posix() in actual,'XML target missing or wrong case: '+target)
     require('_, _, _, _, _, complete = pfQuestCompat.GetQuestLogTitle' not in (ROOT/'pfQuest-tooltip.lua').read_text(),'7th-value completion bug reintroduced')
+    residual_audit=audit_english()
+    require((ROOT/'localization/LICENSE-LibBabble-MIT.txt').is_file(),'Missing LibBabble MIT attribution')
+    for ident,fields in overrides['quests'].items():
+        for field,entry in fields.items():
+            for literal in entry.get('preserve_literals',[]):
+                require(literal in zh[int(ident)][field],f'Generated text lost protected literal: {ident}:{field}')
     return {'quest_ids':len(en),'quest_fields':len(en)*3,'source_baselines':len(baseline),'critical_data_failures':0,
+            'english_residual_audit':residual_audit,
             'name_coverage':coverage,'remaining_names':remaining,'live_game_tested':False}
 
 if __name__=='__main__':

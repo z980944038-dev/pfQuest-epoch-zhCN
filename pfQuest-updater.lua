@@ -1,3 +1,9 @@
+-- 只翻译本模块自身的本地提示；不 Hook 全局聊天、不修改广播协议。
+local function LocalText(text)
+  local locale=pfQuestEpochZhCN
+  return locale and locale.Text and locale.Text(text) or text
+end
+
 function hcstrsplit(delimiter, subject)
   if not subject then return nil end
   local delimiter, fields = delimiter or ":", {}
@@ -134,8 +140,8 @@ gpiupdater:SetScript("OnEvent", function(_, event, ...)
                     if not alreadyshown then
                         local currentVer = formatVersion(localversion)
                         local availableVer = formatVersion(remoteversion)
-                        print("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!")
-                        print("Current: |cff66ccff" .. currentVer .. "|r -> Available: |cff66ccff" .. availableVer .. "|r")
+                        print(LocalText("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!"))
+                        print(LocalText("Current: |cff66ccff") .. currentVer .. LocalText("|r -> Available: |cff66ccff") .. availableVer .. "|r")
                         print("|cff66ccffhttps://github.com/Bennylavaa/pfQuest-epoch/releases|r")
                         alreadyshown = true
                     end
@@ -182,8 +188,8 @@ gpiupdater:SetScript("OnEvent", function(_, event, ...)
         if not alreadyshown and localversion < remoteversion then
             local currentVer = formatVersion(localversion)
             local availableVer = formatVersion(remoteversion)
-            print("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!")
-            print("Current: |cff66ccff" .. currentVer .. "|r -> Available: |cff66ccff" .. availableVer .. "|r")
+            print(LocalText("|cff33ffccpfQuest |cffcccccc[Project Epoch DB]|r New version available!"))
+            print(LocalText("Current: |cff66ccff") .. currentVer .. LocalText("|r -> Available: |cff66ccff") .. availableVer .. "|r")
             print("|cff66ccffhttps://github.com/Bennylavaa/pfQuest-epoch/releases|r")
             gpiupdateavailable = localversion
             alreadyshown = true
@@ -205,7 +211,7 @@ end)
 SLASH_PFQEPING1 = "/pfqe"
 SlashCmdList["PFQEPING"] = function(msg)
     if msg == "" then
-        print("Usage: /pfqe PLAYERNAME")
+        print(LocalText("Usage: /pfqe PLAYERNAME"))
         return
     end
     local strippedName = StripRealmName(msg)

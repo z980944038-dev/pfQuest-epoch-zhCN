@@ -7,7 +7,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 root=Path(__file__).resolve().parent.parent
 parser=argparse.ArgumentParser()
-parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-beta.2.zip')
+parser.add_argument('--output',type=Path,default=root/'dist/pfQuest-epoch-zhCN-v3.3.0-beta.3.zip')
 args=parser.parse_args()
 files=[]
 for p in root.rglob('*'):
@@ -19,7 +19,7 @@ for p in root.rglob('*'):
             files.append(p)
     elif relative.parts[0] in ('db','init','img'):
         files.append(p)
-    elif relative.parts[0] == 'localization' and (p.suffix == '.lua' or p.name == 'LICENSE-pfQuest-MIT.txt'):
+    elif relative.parts[0] == 'localization' and (p.suffix == '.lua' or p.name in ('LICENSE-pfQuest-MIT.txt','LICENSE-LibBabble-MIT.txt')):
         files.append(p)
 args.output.parent.mkdir(parents=True,exist_ok=True)
 with ZipFile(args.output,'w',compression=ZIP_DEFLATED,compresslevel=9) as archive:

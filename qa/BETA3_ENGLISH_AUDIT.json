@@ -1,0 +1,488 @@
+{
+  "status": "pass",
+  "quest_fields_checked": 7170,
+  "localized_names_checked": {
+    "items": 5948,
+    "units": 2265,
+    "objects": 803,
+    "zones": 2363
+  },
+  "unclassified_residuals": 0,
+  "known_item_name_contamination": 0,
+  "preserved_technical_or_fictional_entries": [
+    {
+      "kind": "quests",
+      "id": 26338,
+      "field": "O",
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "literals": [
+        "SI:7"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 26338,
+      "field": "D",
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "literals": [
+        "SI:7"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 26893,
+      "field": "D",
+      "reason": "剧情中的署名缩写，不能推测未揭示的全名",
+      "literals": [
+        "W.P."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 26931,
+      "field": "D",
+      "reason": "角色以单字母代号称呼，保留该代号",
+      "literals": [
+        "K"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27082,
+      "field": "O",
+      "reason": "必须实际输入的鞠躬表情命令，不能翻译命令本身",
+      "literals": [
+        "/bow"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27127,
+      "field": "O",
+      "reason": "人物姓名首字母，保留可识别性",
+      "literals": [
+        "M."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27127,
+      "field": "D",
+      "reason": "人物姓名首字母，保留可识别性",
+      "literals": [
+        "M."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27128,
+      "field": "D",
+      "reason": "人物姓名首字母，保留可识别性",
+      "literals": [
+        "M."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27289,
+      "field": "D",
+      "reason": "信件署名缩写，属于剧情线索",
+      "literals": [
+        "R.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27290,
+      "field": "D",
+      "reason": "信件署名缩写，属于剧情线索",
+      "literals": [
+        "R.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27450,
+      "field": "T",
+      "reason": "组织原文缩写，原段落没有提供可核对的全称",
+      "literals": [
+        "A.S.S."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27450,
+      "field": "O",
+      "reason": "组织原文缩写，原段落没有提供可核对的全称",
+      "literals": [
+        "A.S.S."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27509,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "S.J."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27510,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "S.J."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27511,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "S.J."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27512,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "S.J."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27532,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27532,
+      "field": "D",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27534,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27537,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27538,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27539,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27561,
+      "field": "O",
+      "reason": "装置型号缩写，中文说明已补充",
+      "literals": [
+        "B.T.L.R."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27947,
+      "field": "O",
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "literals": [
+        "SI:7"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27970,
+      "field": "D",
+      "reason": "原文已解释全称的装置缩写",
+      "literals": [
+        "F.A.I.L.S.A.F.E."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27972,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27973,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27974,
+      "field": "O",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 27975,
+      "field": "D",
+      "reason": "人物姓名首字母",
+      "literals": [
+        "J.D."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 28373,
+      "field": "O",
+      "reason": "机构编号保留，并加军情七处中文解释",
+      "literals": [
+        "SI:7"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 28390,
+      "field": "O",
+      "reason": "双手武器的技术标记，已加中文解释并保留原标签",
+      "literals": [
+        "2H"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 28415,
+      "field": "O",
+      "reason": "双手武器的技术标记，已加中文解释并保留原标签",
+      "literals": [
+        "2H"
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 28725,
+      "field": "D",
+      "reason": "侏儒紧急集结通道原名缩写；仅在介绍处说明",
+      "literals": [
+        "G.E.A.R."
+      ]
+    },
+    {
+      "kind": "quests",
+      "id": 31033,
+      "field": "D",
+      "reason": "剧情明确要求破译的恶魔语铭文，逐字保留原文，不臆造译义",
+      "literals": [
+        "Rikk alar il xi zennrakkan lok Kirasath Raka ruk asj xi veni parn kar lok revola rukadare il Karazhan. Lok kamil buras naztheros arakalada xi daz veni. Rikk lok parn il asj xi Z gular maladath lok buras kanrethad il lok kamil. Kiel ashjrethul ante buras gul revos. \nIl kirasath Vorakem Zekulrakkas Archim il Aman Veni Kazzak."
+      ]
+    },
+    {
+      "kind": "items",
+      "id": 64932,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "A"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 45294,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "G"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46032,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "M"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46278,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "S",
+        "J"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46716,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "A"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46768,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46769,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46770,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46771,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46772,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46773,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46774,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "units",
+      "id": 46775,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "SOS"
+      ]
+    },
+    {
+      "kind": "zones",
+      "id": 4418,
+      "reason": "人名首字母、型号或内部缩写保留辨识；其余显示词已中文化",
+      "literals": [
+        "K3"
+      ]
+    }
+  ],
+  "untranslated_special_objects": [
+    {
+      "id": 250088,
+      "english": "Doodad_BOSSGATE02",
+      "reason": "内部模型标识，不当作玩家物体名称翻译"
+    },
+    {
+      "id": 250389,
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    {
+      "id": 250390,
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    {
+      "id": 250564,
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    {
+      "id": 250630,
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    {
+      "id": 250631,
+      "english": "",
+      "reason": "上游空名称，不凭空补写"
+    },
+    {
+      "id": 250636,
+      "english": "Ssaggh ez oou Uul'gwa Ryiu",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    {
+      "id": 250637,
+      "english": "Ssaggh ez oou Par'okoth Vwyq",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    {
+      "id": 250638,
+      "english": "Ssagh ez oou Yyg'far Vwah",
+      "reason": "虚构语言铭文，不臆造译义"
+    },
+    {
+      "id": 250639,
+      "english": "Ssaggh ez oou Lwhuk Ak'agthshi",
+      "reason": "虚构语言铭文，不臆造译义"
+    }
+  ],
+  "scope": "Chinese quest/entity database strings; original English matching tables, code/protocol keys, URLs, brand names and developer diagnostics are outside this metric.",
+  "semantic_review_complete": false,
+  "live_game_tested": false
+}

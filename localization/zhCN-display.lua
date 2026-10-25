@@ -83,6 +83,8 @@ function zh.RefreshOwnedUI()
   if not zh.enabled then return end
   for _,name in ipairs(roots) do bindTree(_G[name]) end
   if pfQuest then
+    -- 导航箭头是独立控件，不在追踪器根窗口下；只绑定它的文本区域。
+    if pfQuest.route and pfQuest.route.arrow then bindTree(pfQuest.route.arrow) end
     for _,key in ipairs({"buttonShow","buttonHide","buttonClean","buttonOnline","buttonLanguage","mapButton"}) do
       bindTree(pfQuest[key])
     end
