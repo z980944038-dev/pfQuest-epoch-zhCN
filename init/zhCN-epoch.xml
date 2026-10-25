@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <Include file="..\db\zhCN\items-epoch.lua"/>
+  <Include file="..\db\zhCN\units-epoch.lua"/>
+  <Include file="..\db\zhCN\objects-epoch.lua"/>
+  <Include file="..\db\zhCN\quests-epoch.lua"/>
+  <Include file="..\db\zhCN\zones-epoch.lua"/>
+  <Include file="..\db\zhCN\professions-epoch.lua"/>
+</Ui>

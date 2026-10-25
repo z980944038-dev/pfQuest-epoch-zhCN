@@ -1,0 +1,71 @@
+{
+  "base": "Bennylavaa/pfQuest-epoch v3.3.0",
+  "epochcn_reference_commit": "2ef292670df80c58672674adfc3fd0798661c862",
+  "shagu_pfquest_release": "7.0.1",
+  "shagu_zhcn_zip_sha256": "c4b2ff2d4e767739d63f7424f53d6ddb24157bfaf2d60e542f7a4bc1a85cb0a1",
+  "total_epoch_quest_ids": 2390,
+  "translated_quest_ids": 2390,
+  "epochcn_specific_quest_matches": 2362,
+  "general_quest_matches": 28,
+  "quest_review_flags": [
+    {
+      "quest_id": 619,
+      "issue": "Missing translated O"
+    },
+    {
+      "quest_id": 8466,
+      "issue": "Missing translated O"
+    },
+    {
+      "quest_id": 8466,
+      "issue": "Missing translated D"
+    },
+    {
+      "quest_id": 8467,
+      "issue": "Missing translated O"
+    },
+    {
+      "quest_id": 8467,
+      "issue": "Missing translated D"
+    },
+    {
+      "quest_id": 8469,
+      "issue": "Missing translated O"
+    },
+    {
+      "quest_id": 8469,
+      "issue": "Missing translated D"
+    },
+    {
+      "quest_id": 31001,
+      "issue": "Missing translated D"
+    },
+    {
+      "quest_id": 31004,
+      "issue": "Missing translated D"
+    }
+  ],
+  "name_coverage": {
+    "items": {
+      "translated": 5910,
+      "total": 5948,
+      "untranslated": 38
+    },
+    "units": {
+      "translated": 2178,
+      "total": 2265,
+      "untranslated": 87
+    },
+    "objects": {
+      "translated": 773,
+      "total": 813,
+      "untranslated": 40
+    },
+    "zones": {
+      "translated": 1063,
+      "total": 2363,
+      "untranslated": 1300
+    }
+  },
+  "note": "ID equality is not proof of semantic correctness. English server index is retained. No live game runtime test."
+}

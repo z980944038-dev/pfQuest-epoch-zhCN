@@ -1,0 +1,10 @@
+{
+  "original": "https://github.com/Bennylavaa/pfQuest-epoch",
+  "original_license": "Custom, personal use and GitHub forks only",
+  "epochcn": "https://github.com/z980944038-dev/EpochCN",
+  "epochcn_commit": "2ef292670df80c58672674adfc3fd0798661c862",
+  "pfquest_core": "https://github.com/shagu/pfQuest",
+  "pfquest_core_release": "7.0.1",
+  "pfquest_core_license": "MIT",
+  "usage": "Derived translation data only; no complete third-party addon redistributed."
+}

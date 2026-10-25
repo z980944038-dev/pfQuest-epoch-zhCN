@@ -1,17 +1,21 @@
 ## Interface: 30300
-## Title: |cff33ffccpf|cffffffffQuest |cffcccccc[Project Epoch DB]
+## Title: |cff33ffccpf|cffffffffQuest |cffffff00[纪元数据库·简体中文]
 ## Author: Bennylavaa (retired), Cuddlehorn (inactive)
 ## Contributors: Exuria, Shagu, snifflewow, skmd0, trav346, emailnumero123-art, Defcons, Kindrack
-## Notes: A Project Epoch DB extension for pfQuest
+## Notes: 纪元服任务、物品、NPC及区域简体中文扩展（保留英文任务匹配）
 ## Version: 3.3.0
+## X-Localization-Version: zhCN-beta.1
 ## Dependencies: pfQuest-wotlk
-## SavedVariables: pfQuest_epochcount, pfQuest_CompletedQuestData
+## SavedVariables: pfQuest_epochcount, pfQuest_CompletedQuestData, pfQuest_epoch_zhCNEnabled, pfQuest_epoch_zhCNInitialized
 
 init\data-epoch.xml
 init\enUS-epoch.xml
+init\zhCN-epoch.xml
 
 overwrites.lua
 patchtable.lua
+localization\zhCN-ui.lua
+localization\zhCN.lua
 pfQuest-lootpanel.lua
 pfQuest-updater.lua
 pfQuest-worldmap.lua
